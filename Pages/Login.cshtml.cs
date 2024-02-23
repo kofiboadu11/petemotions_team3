@@ -15,7 +15,7 @@ public class LoginModel : PageModel
         if (IsValidUser(Username, Password))
         {
            
-            return RedirectToPage("/Dashboard");
+            return RedirectToPage("/Index");
         }
         else
         {
