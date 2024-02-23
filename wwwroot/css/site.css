@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#parent{ 
+  display: flex; 
+} 
+.col{ 
+  color: white; 
+  height: 100px; 
+  background-color: #ffffff; 
+  padding: 10px; 
+  flex: 50%; 
+} 
+.col:nth-child(2){ 
+  background-color: #ffffff; 
+} 

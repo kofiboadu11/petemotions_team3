@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pwrline\\Code\\C#\\PetEmotionsApp\\PetEmotionsApp.csproj": {}
+    "/Users/nabihamomin/Downloads/CS Capstone Project/petemotions_team3/PetEmotionsApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pwrline\\Code\\C#\\PetEmotionsApp\\PetEmotionsApp.csproj": {
+    "/Users/nabihamomin/Downloads/CS Capstone Project/petemotions_team3/PetEmotionsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pwrline\\Code\\C#\\PetEmotionsApp\\PetEmotionsApp.csproj",
+        "projectUniqueName": "/Users/nabihamomin/Downloads/CS Capstone Project/petemotions_team3/PetEmotionsApp.csproj",
         "projectName": "PetEmotionsApp",
-        "projectPath": "C:\\Users\\pwrline\\Code\\C#\\PetEmotionsApp\\PetEmotionsApp.csproj",
-        "packagesPath": "C:\\Users\\pwrline\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pwrline\\Code\\C#\\PetEmotionsApp\\obj\\",
+        "projectPath": "/Users/nabihamomin/Downloads/CS Capstone Project/petemotions_team3/PetEmotionsApp.csproj",
+        "packagesPath": "/Users/nabihamomin/.nuget/packages/",
+        "outputPath": "/Users/nabihamomin/Downloads/CS Capstone Project/petemotions_team3/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pwrline\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/nabihamomin/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -58,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/RuntimeIdentifierGraph.json"
         }
       }
     }

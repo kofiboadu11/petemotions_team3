@@ -1,0 +1,71 @@
+@page
+@model HistoryModel
+@{
+    ViewData["Title"] = "History page";
+}
+
+div{
+    height: 500px;
+    width: 500px;
+}
+<!-- Chart.js-->
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<!-- full calendar -->
+<script src="
+https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
+"></script>
+
+<div class="text-center">
+
+    <h1 class="display-4">History page</h1>
+    
+</div>
+
+
+  <canvas id="myChart"></canvas>
+
+  <script>
+const xValues = ["Happy", "Sad", "Nuetral"];
+const yValues = [55, 49, 44];
+const barColors = ["red", "green","blue"];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Emotions Breakdown"
+    }
+  }
+});
+</script>
+
+</div>
+   
+
+ <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
+<body>
+    <div id='calendar'></div>
+  </body>
+</div>
+
