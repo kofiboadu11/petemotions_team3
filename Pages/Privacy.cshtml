@@ -1,8 +1,48 @@
 ﻿@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "PetVibes - Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <p>This Privacy Policy governs the manner in which PetVibes collects, uses, maintains, and discloses information collected from users (each, a "User") of the PetVibes website ("Site"). This privacy policy applies to the Site and all products and services offered by PetVibes.</p>
+
+      
+        <h2>Data Collection</h2>
+        <p>PetVibes collects data from users' uploaded images of their pets.</p>
+
+        <p>The primary purpose of collecting image data is to analyze and interpret the emotions of the pets using machine learning algorithms. This analysis aims to provide insights into the emotional states of pets.</p>
+
+        <p>The data collected from users' images is processed and analyzed in real-time using machine learning models deployed on our servers. Once the analysis is completed, the resulting emotional states are stored in our database for further use, such as generating daily and monthly reports for users.</p>
+
+        <p>Users have full control and ownership over the image data collected from their live streams. They can access, modify, or delete their data at any time through their user accounts on the PetVibes platform.</p>
+
+        <p>This privacy policy is subject to change without notice and was last updated on 2/22/24.</p>
+    </div>
+</body>
+</html>
