@@ -1,0 +1,99 @@
+﻿@page
+@model PetEmotionsApp.Pages.Pages_FileUpload
+
+@{
+    ViewData["Title"] = "PetVibes - Upload";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <label class="form-label" for="customFile">Preferred file formats are .PNG and .JPG, please keep image size below 2MB!</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="customFile" accept=".png, .jpg" aria-describedby="uploadBtn">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="uploadBtn">Upload</button>
+                            </div>
+                        </div>
+                        <small id="fileSizeError" class="text-danger" style="display: none;">File size exceeds 2MB limit.</small>
+                        <small id="fileTypeError" class="text-danger" style="display: none;">Please select a file with .png or .jpg extension.</small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script> // Javascript (ew) that makes the button run
+        document.getElementById('uploadBtn').addEventListener('click', function () {
+            var fileInput = document.getElementById('customFile');
+            var file = fileInput.files[0]; // Get the selected file
+            var fileSize = file.size; // Size in bytes
+            var maxSize = 2 * 1024 * 1024; // 2MB in bytes
+            var allowedExtensions = ['png', 'jpg'];
+
+            // Ensure file isn't larger than max
+            if (fileSize > maxSize) {
+                document.getElementById('fileSizeError').style.display = 'block';
+            }
+            // Check to see if file is correct file type
+            else if (!allowedExtensions.includes(file.name.split('.').pop().toLowerCase())) {
+                document.getElementById('fileTypeError').style.display = 'block';
+            }
+            // File is valid --> Send to server
+            else {
+                document.getElementById('fileSizeError').style.display = 'none';
+                document.getElementById('fileTypeError').style.display = 'none';
+
+                // Console-ing to make sure it works
+                console.log('Sending file:', file.name);
+
+                // Create a new FormData object then append file + datetime
+                var formData = new FormData();
+                formData.append('file', file);
+                var currentDate = new Date();
+                var currentTime = currentDate.toLocaleString();
+                formData.append('timestamp', currentTime);
+
+                // More console-ing
+                console.log('File sent at:', currentTime);
+
+                // Initialize the XMLHttpRequest object for a POST request to the specified URL, then send
+                // This is just filler.. replace '/FileUpload' with server endpoint once we have one!
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/FileUpload');
+                xhr.send(formData);
+
+            }
+        });
+    </script>
+</body>
+</html>
