@@ -1,13 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PetEmotionsApp.Data;
 
 public class LoginModel : PageModel
 {
+    private readonly PetEmotionsAppContext _context;
+
     [BindProperty]
     public required string Username { get; set; }
 
     [BindProperty]
     public required string Password { get; set; }
+
+    public LoginModel(PetEmotionsAppContext context)
+    {
+        _context = context;
+    }
 
     public IActionResult OnPost()
     {
@@ -15,7 +23,7 @@ public class LoginModel : PageModel
         if (IsValidUser(Username, Password))
         {
            
-            return RedirectToPage("/Index");
+            return RedirectToPage("/History");
         }
         else
         {
@@ -27,7 +35,16 @@ public class LoginModel : PageModel
 
     private bool IsValidUser(string username, string password)
     {
-       
-        return username == "admin" && password == "admin123";
+        //grab data
+        var users = from u in _context.Users select u;
+        //Check Username
+        if (!string.IsNullOrWhiteSpace(username))
+            users = users.Where(u => u.Username.ToLower().Contains(username.ToLower()));
+        //If Username found then check password
+        if (!string.IsNullOrWhiteSpace(password) && users.Any())
+            users = users.Where(u => u.Password.ToLower().Contains(password.ToLower()));
+        //return true if user found
+        if (users.Any()) return true;
+        else return false;
     }
 }

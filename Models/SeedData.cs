@@ -13,7 +13,7 @@ public static class SeedData
         {
             if (context == null || context.Users == null)
             {
-                throw new ArgumentNullException("Null RazorPagesMovieContext");
+                throw new ArgumentNullException("Null context");
             }
 
             // Look for any Users
