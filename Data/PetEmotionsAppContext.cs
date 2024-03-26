@@ -14,6 +14,6 @@ namespace PetEmotionsApp.Data
         {
         }
 
-        public DbSet<PetEmotionsApp.Models.Users> Users { get; set; } = default!;
+        public DbSet<Users> Users { get; set; }
     }
 }
