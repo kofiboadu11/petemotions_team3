@@ -1,13 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PetEmotionsApp.Models;
+using PetEmotionsApp.Data;
 
 namespace PetEmotionsApp.Pages
 {
-    public class Index1Model : PageModel
+    public class FileUploadModel : PageModel
     {
+        private readonly PetEmotionsAppContext _context;
+
+        public FileUploadModel(PetEmotionsAppContext context)
+        {
+            _context = context;
+        }
+
         public void OnGet()
         {
         }
+
         public async Task<IActionResult> OnPostUploadAsync()
         {
             using (var memoryStream = new MemoryStream())
@@ -21,8 +31,9 @@ namespace PetEmotionsApp.Pages
                     {
                         FileContent = memoryStream.ToArray();
                     };
-
-                    _context.File.Add(file);
+                // User = currentUser
+                // _context.User.Add(file)
+                    _context.Users.Add(file);
 
                     await _context.SaveChangesAsync();
                 }
