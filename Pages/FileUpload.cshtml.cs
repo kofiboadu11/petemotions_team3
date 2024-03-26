@@ -19,7 +19,7 @@ namespace PetEmotionsApp.Pages
                 {
                     var file = new FileUpload();
                     {
-                        Content = memoryStream.ToArray();
+                        FileContent = memoryStream.ToArray();
                     };
 
                     _context.File.Add(file);
