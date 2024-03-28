@@ -34,9 +34,9 @@ https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
   <canvas id="myChart" width="200" height="100" ></canvas>
 
   <script>
-const xValues = ["Happy", "Sad", "Neutral"];
-const yValues = [55, 49, 44];
-const barColors = ["red", "green","blue"];
+const xValues = ["Happy", "Sad", "Angry", "Other"];
+const yValues = [12, 8, 9, 10];
+const barColors = ["green", "blue","red", "purple"];
 
 new Chart("myChart", {
   type: "pie",
@@ -72,30 +72,41 @@ new Chart("myChart", {
             daysOfWeek : ['1', '4'],
             title: 'sad',
             startRecur: '2024-03-04', 
-            endRecur: '2024-03-31'
-            
+            endRecur: '2024-03-31',
+            backgroundColor: '#0000FF'
           },
           {
             id: 'b',
             daysOfWeek : ['2', '5'],
             title: 'happy',
             startRecur: '2024-03-04',
-            endRecur: '2024-03-31' 
-           // endTime: '11:59'
+            endRecur: '2024-03-31',
+            backgroundColor: '#355e3b'
           }, 
           {
             id: 'c',
-            daysOfWeek : ['3', '6', '7'],
-            title: 'neutral',
+            daysOfWeek : ['3', '6'],
+            title: 'angry',
             startRecur: '2024-03-04',
-            endRecur: '2024-03-31' 
+            endRecur: '2024-03-31', 
            // endTime: '11:59'
+           backgroundColor: '#FF0000'
+          },
+          {
+            id: 'd',
+            daysOfWeek : ['0'],
+            title: 'other',
+            startRecur: '2024-03-03',
+            endRecur: '2024-03-31', 
+           // endTime: '11:59'
+           backgroundColor: '#800080'
           }
           ]
         });
         var event1 = calendar.getEventById('a')
         var event2 = calendar.getEventById('b')
         var event3 = calendar.getEventById('c')
+        var event4 = calendar.getEventById('d')
        //var start1 = event1.start
         //var start2 = event2.startRecur
       //  var end2 = event2.endRecur
