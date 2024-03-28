@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_Users
+namespace PetEmotionsApp.Pages_FileUploader
 {
     public class IndexModel : PageModel
     {
@@ -19,11 +19,11 @@ namespace PetEmotionsApp.Pages_Users
             _context = context;
         }
 
-        public IList<Users> Users { get;set; } = default!;
+        public IList<FileUpload> FileUpload { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Users = await _context.Users.ToListAsync();
+            FileUpload = await _context.FileUpload.ToListAsync();
         }
     }
 }

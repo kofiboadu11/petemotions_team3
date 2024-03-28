@@ -8,10 +8,5 @@ namespace PetEmotionsApp.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public bool Current {  get; set; }
-        public List<FileUpload>? Files {get; set;}
-
-        public void AddFile(FileUpload file) {
-            Files.Add(file);
-        }
     }
 }
