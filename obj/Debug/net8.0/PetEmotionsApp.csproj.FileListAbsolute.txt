@@ -1,0 +1,9 @@
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.csproj.AssemblyReference.cache
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.AssemblyInfoInputs.cache
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.AssemblyInfo.cs
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.RazorAssemblyInfo.cache
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.RazorAssemblyInfo.cs
+C:\Users\Owner\Desktop\Big Project\petemotions_team3\obj\Debug\net8.0\PetEmotionsApp.sourcelink.json
