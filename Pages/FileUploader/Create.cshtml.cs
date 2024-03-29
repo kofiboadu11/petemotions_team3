@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_Users
+namespace PetEmotionsApp.Pages_FileUploader
 {
     public class CreateModel : PageModel
     {
@@ -25,7 +25,7 @@ namespace PetEmotionsApp.Pages_Users
         }
 
         [BindProperty]
-        public Users Users { get; set; } = default!;
+        public FileUpload FileUpload { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -35,7 +35,7 @@ namespace PetEmotionsApp.Pages_Users
                 return Page();
             }
 
-            _context.Users.Add(Users);
+            _context.FileUpload.Add(FileUpload);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
