@@ -6,4 +6,5 @@ namespace PetEmotionsApp.Models
         public DateTime fileDate {get; set;}
         // TODO: Enum/obj for tagged emotion
     }
+
 }

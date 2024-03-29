@@ -1,13 +1,25 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PetEmotionsApp.Models;
 using PetEmotionsApp.Data;
+using System.Globalization;
+
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+
 
 namespace PetEmotionsApp.Pages
 {
     public class FileUploadModel : PageModel
     {
         private readonly PetEmotionsAppContext _context;
+
+        
+        [BindProperty]
+        public SingleFileUploadDb FileUpload { get; set; }
 
         public FileUploadModel(PetEmotionsAppContext context)
         {
@@ -27,14 +39,18 @@ namespace PetEmotionsApp.Pages
                 // Upload the file if less than 2 MB
                 if (memoryStream.Length < 2097152)
                 {
-                    var file = new FileUpload();
+                    var file = new FileUpload
                     {
-                        FileContent = memoryStream.ToArray();
+                        FileContent = memoryStream.ToArray(),
+                        fileDate = DateTime.UtcNow,
                     };
-                // User = currentUser
-                // _context.User.Add(file)
-                    _context.Users.Add(file);
-
+                    var users = from u in _context.Users select u;
+                    users = users.Where(u => u.Current == true);
+                    if (users.Any())
+                    {
+                        users.First().AddFile(file);
+                        _context.SaveChanges();
+                    }
                     await _context.SaveChangesAsync();
                 }
                 else
@@ -45,5 +61,11 @@ namespace PetEmotionsApp.Pages
 
         return Page();
         }
+    }
+    public class SingleFileUploadDb
+    {
+        [Required]
+        [Display(Name="File")]
+        public IFormFile FormFile { get; set; }
     }
 }
