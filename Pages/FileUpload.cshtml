@@ -175,12 +175,14 @@
                         
                         console.log(img.width + 'x' + img.height);
                         let tensor = tf.browser.fromPixels(img)
-                            .resizeNearestNeighbor([224, 224]);
+                            .resizeNearestNeighbor([224, 224])
+                            .expandDims();
                         //LOOK AT THIS PART. currently taking too long to load model so prediction can't be done. find a way to wait for model to load first
-                        const model = tf.loadLayersModel('tfjs_petemo/model.json') => {
+                        (async() => {
+                            const model = await tf.loadLayersModel('tfjs_petemo/model.json');
                             let predictions = model.predict(tensor).data();
-                            console.log(predictions);
-                        };
+                            console.log(predictions);                            
+                        })();
                     }
                     
                     
