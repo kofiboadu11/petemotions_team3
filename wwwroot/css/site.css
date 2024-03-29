@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.parent{
+  background: none;
+  
+  
+}
+  
+.child{
+   background: none;
+   
+}
