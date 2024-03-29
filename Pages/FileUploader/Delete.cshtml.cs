@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_Users
+namespace PetEmotionsApp.Pages_FileUploader
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace PetEmotionsApp.Pages_Users
         }
 
         [BindProperty]
-        public Users Users { get; set; } = default!;
+        public FileUpload FileUpload { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,15 +29,15 @@ namespace PetEmotionsApp.Pages_Users
                 return NotFound();
             }
 
-            var users = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            var fileupload = await _context.FileUpload.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (users == null)
+            if (fileupload == null)
             {
                 return NotFound();
             }
             else
             {
-                Users = users;
+                FileUpload = fileupload;
             }
             return Page();
         }
@@ -49,11 +49,11 @@ namespace PetEmotionsApp.Pages_Users
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
-            if (users != null)
+            var fileupload = await _context.FileUpload.FindAsync(id);
+            if (fileupload != null)
             {
-                Users = users;
-                _context.Users.Remove(Users);
+                FileUpload = fileupload;
+                _context.FileUpload.Remove(FileUpload);
                 await _context.SaveChangesAsync();
             }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_Users
+namespace PetEmotionsApp.Pages_FileUploader
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace PetEmotionsApp.Pages_Users
             _context = context;
         }
 
-        public Users Users { get; set; } = default!;
+        public FileUpload FileUpload { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,14 +28,14 @@ namespace PetEmotionsApp.Pages_Users
                 return NotFound();
             }
 
-            var users = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            var fileupload = await _context.FileUpload.FirstOrDefaultAsync(m => m.Id == id);
+            if (fileupload == null)
             {
                 return NotFound();
             }
             else
             {
-                Users = users;
+                FileUpload = fileupload;
             }
             return Page();
         }

@@ -1,5 +1,5 @@
 @page
-@model PetEmotionsApp.Pages_Users.IndexModel
+@model PetEmotionsApp.Pages_FileUploader.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -14,29 +14,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Users[0].Username)
+                @Html.DisplayNameFor(model => model.FileUpload[0].FileContent)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Users[0].Password)
+                @Html.DisplayNameFor(model => model.FileUpload[0].fileDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Users[0].Current)
+                @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Users) {
+@foreach (var item in Model.FileUpload) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Username)
+                @Html.DisplayFor(modelItem => item.FileContent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
+                @Html.DisplayFor(modelItem => item.fileDate)
             </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Current)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.emotion)
+            </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |

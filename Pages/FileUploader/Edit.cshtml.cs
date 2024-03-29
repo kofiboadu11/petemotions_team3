@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
 
-namespace PetEmotionsApp.Pages_Users
+namespace PetEmotionsApp.Pages_FileUploader
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace PetEmotionsApp.Pages_Users
         }
 
         [BindProperty]
-        public Users Users { get; set; } = default!;
+        public FileUpload FileUpload { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,12 +30,12 @@ namespace PetEmotionsApp.Pages_Users
                 return NotFound();
             }
 
-            var users =  await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            var fileupload =  await _context.FileUpload.FirstOrDefaultAsync(m => m.Id == id);
+            if (fileupload == null)
             {
                 return NotFound();
             }
-            Users = users;
+            FileUpload = fileupload;
             return Page();
         }
 
@@ -48,7 +48,7 @@ namespace PetEmotionsApp.Pages_Users
                 return Page();
             }
 
-            _context.Attach(Users).State = EntityState.Modified;
+            _context.Attach(FileUpload).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace PetEmotionsApp.Pages_Users
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(Users.Id))
+                if (!FileUploadExists(FileUpload.Id))
                 {
                     return NotFound();
                 }
@@ -69,9 +69,9 @@ namespace PetEmotionsApp.Pages_Users
             return RedirectToPage("./Index");
         }
 
-        private bool UsersExists(int id)
+        private bool FileUploadExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.FileUpload.Any(e => e.Id == id);
         }
     }
 }

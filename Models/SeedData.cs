@@ -11,60 +11,25 @@ public static class SeedData
             serviceProvider.GetRequiredService<
                 DbContextOptions<PetEmotionsAppContext>>()))
         {
-            if (context == null || context.Users == null)
+            if (context == null || context.FileUpload == null)
             {
                 throw new ArgumentNullException("Null context");
             }
 
             // Look for any Users
-            if (context.Users.Any())
+            if (context.FileUpload.Any())
             {
                 return;   // DB has been seeded
             }
-
-            context.Users.AddRange(
-                new Users
+            //If someone finds out how to put a png to pre-load you would do it here
+/*            context.FileUpload.AddRange(
+                new FileUpload
                 {
-                   Username = "Jarrod",
-                   Password = "Admin",
-                   Current = false
+                    FileContent = ,
+                    fileDate = ,
+                    emotion = 
                 },
-
-                new Users
-                {
-                    Username = "Carson",
-                    Password = "Admin2",
-                    Current = false
-                },
-
-                new Users
-                {
-                    Username = "Nabiha",
-                    Password = "Admin3",
-                    Current = false
-                },
-
-                new Users
-                {
-                    Username = "Kofi",
-                    Password = "Admin4",
-                    Current = false
-                },
-
-                new Users
-                {
-                    Username = "Justin",
-                    Password = "Admin5",
-                    Current = false
-                },
-
-                new Users
-                {
-                    Username = "Salem",
-                    Password = "Admin6",
-                    Current = false
-                }
-            );
+            );*/
             context.SaveChanges();
         }
     }
