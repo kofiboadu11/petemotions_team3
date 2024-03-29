@@ -37,6 +37,13 @@ public class LoginModel : PageModel
     {
         //grab data
         var users = from u in _context.Users select u;
+
+        foreach(var u in users)
+        {
+            u.Current = false;
+            _context.SaveChanges();
+        }
+
         //Check Username
         if (!string.IsNullOrWhiteSpace(username))
             users = users.Where(u => u.Username.ToLower().Contains(username.ToLower()));
@@ -44,7 +51,12 @@ public class LoginModel : PageModel
         if (!string.IsNullOrWhiteSpace(password) && users.Any())
             users = users.Where(u => u.Password.ToLower().Contains(password.ToLower()));
         //return true if user found
-        if (users.Any()) return true;
+        if (users.Any())
+        {
+            users.First().Current = true;
+            _context.SaveChanges();
+            return true;
+        }
         else return false;
     }
 }

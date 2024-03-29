@@ -26,37 +26,43 @@ public static class SeedData
                 new Users
                 {
                    Username = "Jarrod",
-                   Password = "Admin"
+                   Password = "Admin",
+                   Current = false
                 },
 
                 new Users
                 {
                     Username = "Carson",
-                    Password = "Admin2"
+                    Password = "Admin2",
+                    Current = false
                 },
 
                 new Users
                 {
                     Username = "Nabiha",
-                    Password = "Admin3"
+                    Password = "Admin3",
+                    Current = false
                 },
 
                 new Users
                 {
                     Username = "Kofi",
-                    Password = "Admin4"
+                    Password = "Admin4",
+                    Current = false
                 },
 
                 new Users
                 {
                     Username = "Justin",
-                    Password = "Admin5"
+                    Password = "Admin5",
+                    Current = false
                 },
 
                 new Users
                 {
                     Username = "Salem",
-                    Password = "Admin6"
+                    Password = "Admin6",
+                    Current = false
                 }
             );
             context.SaveChanges();
