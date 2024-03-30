@@ -44,14 +44,14 @@ namespace PetEmotionsApp.Pages
                         FileContent = memoryStream.ToArray(),
                         fileDate = DateTime.UtcNow,
                     };
-                    var users = from u in _context.Users select u;
-                    users = users.Where(u => u.Current == true);
-                    if (users.Any())
-                    {
-                        users.First().AddFile(file);
-                        _context.SaveChanges();
-                    }
-                    await _context.SaveChangesAsync();
+                //    var users = from u in _context.Users select u;
+                //    users = users.Where(u => u.Current == true);
+                //    if (users.Any())
+                //    {
+                //        users.First().AddFile(file);
+                //        _context.SaveChanges();
+                //    }
+                //    await _context.SaveChangesAsync();
                 }
                 else
                 {

@@ -1,0 +1,48 @@
+@page
+@model PetEmotionsApp.Pages_FileUploader.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileUpload[0].FileContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileUpload[0].fileDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FileUpload) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fileDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.emotion)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

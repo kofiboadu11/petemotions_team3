@@ -14,6 +14,17 @@ namespace PetEmotionsApp.Data
         {
         }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<FileUpload> FileUpload { get; set; }
+
+        //placeholder for if I ever get enums to work
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<FileUpload>()
+                .Property(e => e.emotion)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (Emotions)Enum.Parse(typeof(Emotions), v));
+        }
     }
 }
