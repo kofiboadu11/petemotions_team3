@@ -114,11 +114,11 @@
         async function loadModel() {
             return tf.loadLayersModel('tfjs_petemo/model.json');
         }
-        async function prediction(image) {
+        async function prediction(tensor) {
             const model = await loadModel();
-            const imageTensor = preprocess(image);
-            let result = model.predict(imageTensor);
+            let result = model.predict(tensor).data();
             console.log(result);
+            return result;
         }
 
         /* on page load (for debugging)
@@ -178,17 +178,18 @@
                             .resizeNearestNeighbor([224, 224])
                             .expandDims();
                         //LOOK AT THIS PART. currently taking too long to load model so prediction can't be done. find a way to wait for model to load first
-                        (async() => {
+                        /*async() => {
                             const model = await tf.loadLayersModel('tfjs_petemo/model.json');
                             let predictions = model.predict(tensor).data();
-                            console.log(predictions);                            
-                        })();
+                            console.log(predictions);
+                        })();*/
+                        let result = prediction(tensor);
                     }
                     
                     
                 };
                 reader.readAsDataURL(file);
-
+                /*
                 // Simulate server response delay (remove this in actual implementation)
                 setTimeout(function () {
                     // Hide loading overlay
@@ -206,7 +207,7 @@
                     } else if (emotion === "Negative") {
                         document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
                     }
-                }, 2000); // 2 second delay
+                }, 2000); // 2 second delay*/
             }
         });
     </script>
