@@ -1,5 +1,12 @@
 ﻿@page
-@model PetEmotionsApp.Pages.Pages_FileUpload
+@model FileUploadModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+public string GetAntiXsrfRequestToken()
+{
+    return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+}
+}
 
 @{
     ViewData["Title"] = "PetVibes - Upload";
@@ -64,6 +71,9 @@
     </style>
 </head>
 <body>
+    <form method="post">
+    <!-- your inputs-->
+    </form>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -150,14 +160,25 @@
                 document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
 
                 var formData = new FormData();
-                formData.append('file', file);
+                formData.append('FileUpload', file);
                 var currentDate = new Date();
                 var currentTime = currentDate.toLocaleString();
-                formData.append('timestamp', currentTime);
+                //formData.append('timestamp', currentTime);
 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/FileUpload');
-                xhr.send(formData);
+                $.ajax({
+                    url: '',
+                    headers:
+                    {
+                        "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                    },
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    type: 'post',
+                    //success: function () {
+                    //    alert('Uploaded by jQuery');
+                    //}
+                });
 
                 // Display loading overlay
                 document.getElementById('loadingOverlay').style.display = 'flex';

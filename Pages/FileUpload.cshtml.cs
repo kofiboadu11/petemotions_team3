@@ -11,61 +11,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 
-namespace PetEmotionsApp.Pages
+namespace PetEmotionsApp.Pages;
+public class FileUploadModel : PageModel
 {
-    public class FileUploadModel : PageModel
+    private readonly PetEmotionsAppContext _context;
+    
+    public FileUploadModel(PetEmotionsAppContext context)
     {
-        private readonly PetEmotionsAppContext _context;
-
-        
-        [BindProperty]
-        public SingleFileUploadDb FileUpload { get; set; }
-
-        public FileUploadModel(PetEmotionsAppContext context)
-        {
-            _context = context;
-        }
-
-        public void OnGet()
-        {
-        }
-
-        public async Task<IActionResult> OnPostUploadAsync()
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                await FileUpload.FormFile.CopyToAsync(memoryStream);
-
-                // Upload the file if less than 2 MB
-                if (memoryStream.Length < 2097152)
-                {
-                    var file = new FileUpload
-                    {
-                        FileContent = memoryStream.ToArray(),
-                        fileDate = DateTime.UtcNow,
-                    };
-                //    var users = from u in _context.Users select u;
-                //    users = users.Where(u => u.Current == true);
-                //    if (users.Any())
-                //    {
-                //        users.First().AddFile(file);
-                //        _context.SaveChanges();
-                //    }
-                //    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    ModelState.AddModelError("File", "The file is too large.");
-                }
-            }
-
-        return Page();
-        }
+        _context = context;
     }
-    public class SingleFileUploadDb
-    {
-        [Required]
-        [Display(Name="File")]
-        public IFormFile FormFile { get; set; }
+
+    public async Task<IActionResult> OnPost(IFormFile FileUpload)
+    {   
+        using (var memoryStream = new MemoryStream())
+        {
+            await FileUpload.CopyToAsync(memoryStream);
+
+            // Upload the file if less than 2 MB
+            if (memoryStream.Length < 2097152)
+            {
+                var file = new FileUpload()
+                {
+                    FileContent = memoryStream.ToArray(),
+                    fileDate = DateTime.UtcNow,
+                };
+            _context.FileUpload.Add(file);
+            await _context.SaveChangesAsync();
+            }
+            else
+            {
+                ModelState.AddModelError("File", "The file is too large.");
+            }
+        }
+
+    return Page();
     }
 }
