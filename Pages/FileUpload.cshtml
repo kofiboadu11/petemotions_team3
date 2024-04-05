@@ -1,5 +1,12 @@
-﻿@page
+@page
 @model FileUploadModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+public string GetAntiXsrfRequestToken()
+{
+    return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+}
+}
 
 @{
     ViewData["Title"] = "PetVibes - Upload";
@@ -17,7 +24,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="path/to/styles.css">
 </head>
+
 <body style="background-color: #222831;">
+    <form method="post">
+    <!-- your inputs-->
+    </form>
     <div class="fileUpload">
         <div class="container">
             <div class="row justify-content-center">
@@ -58,9 +69,24 @@
         </div>
     </div>
 
-
-
     <script>
+        //TODO: move the model stuff to it's own file/function to be referenced
+        async function preprocess(imageData) {
+            let imageTensor = tf.browse.fromPixels(imageData);
+            const offset = tf.scalar(255.0);
+            const normalized = tf.scalar(1.0).sub(resized.div(offset));
+            //may need to change dimensions of input
+            return normalized;
+        }
+        async function loadModel() {
+            return tf.loadLayersModel('tfjs_petemo/model.json');
+        }
+        async function prediction(tensor) {
+            const model = await loadModel();
+            let result = model.predict(tensor).data();
+            //console.log(result);
+            return result;
+        }
         document.getElementById('uploadBtn').addEventListener('click', function () {
             var fileInput = document.getElementById('customFile');
             var file = fileInput.files[0]; // Get the selected file
@@ -80,15 +106,8 @@
                 document.getElementById('emotionContent').innerHTML = "Thinking...";
                 document.querySelector('.upload_emotionBox').style.backgroundColor = "#ced4da";
 
-                var formData = new FormData();
-                formData.append('file', file);
-                var currentDate = new Date();
-                var currentTime = currentDate.toLocaleString();
-                formData.append('timestamp', currentTime);
-
-                // var xhr = new XMLHttpRequest();
-                // xhr.open('POST', '/FileUpload');
-                // xhr.send(formData);
+                var emotion = "";
+                //formData.append('timestamp', currentTime);
 
                 // Display loading overlay
                 document.querySelector('.upload_imageContainer img').style.filter = 'grayscale(70%)';
@@ -103,21 +122,53 @@
                     // Display emotion box after image upload
                     document.querySelector('.upload_emotionBox').style.display = 'block';
 
-                    img.onload = function () {
+                    img.onload = async function () {
                         console.log(img.width + 'x' + img.height);
                         let tensor = tf.browser.fromPixels(img)
                             .resizeNearestNeighbor([224, 224])
                             .expandDims();
 
-                        (async () => {
-                            const model = await tf.loadLayersModel('tfjs_petemo/model.json');
-                            let predictions = model.predict(tensor).data();
-                            console.log(predictions);
-                        })();
+                        let result = await prediction(tensor);
+                        console.log(result);
+                        let resultIndex = result.indexOf(Math.max.apply(Math, result));
+                        console.log(resultIndex);
+                        switch(resultIndex) {
+                            case 0:
+                                emotion = 'Angry';
+                                break;
+                            case 1:
+                                emotion = 'Happy';
+                                break;
+                            case 2:
+                                emotion = 'Other';
+                                break;
+                            case 3:
+                                emotion = 'Sad';
+                                break;
+                        }
+                        var formData = new FormData();
+                        var currentDate = new Date();
+                        var currentTime = currentDate.toLocaleString();
+                        formData.append('FileUpload', file);
+                        formData.append('EmotionString', emotion);
+                        $.ajax({
+                            url: '',
+                            headers:
+                            {
+                                "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                            },
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            type: 'post',
+                            //success: function () {
+                            //    alert('Uploaded by jQuery');
+                            //}
+                        });
                     }
                 };
                 reader.readAsDataURL(file);
-
+                
                 // Simulate server response delay (remove this in actual implementation)
                 setTimeout(function () {
                     // Hide loading overlay
@@ -125,20 +176,21 @@
                     document.querySelector('.upload_spinner-border').style.display = 'none';
 
                     // Replace "Thinking..." with actual emotion received from server
-                    var emotion = "Positive"; // Set manually for now, will be replaced once we get emotion from server
+                    //var emotion = "Positive"; // Set manually for now, will be replaced once we get emotion from server
                     document.getElementById('emotionContent').innerHTML = emotion;
 
                     // Change emotion box color based on emotion
-                    if (emotion === "Positive") {
-                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#7dc17d";
-                    } else if (emotion === "Neutral") {
-                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#ced4da";
-                    } else if (emotion === "Negative") {
-                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#dc7f7f";
+                    if (emotion === 'Positive') {
+                        document.getElementById('emotionBox').style.backgroundColor = "#7dc17d";
+                    } else if (emotion === 'Neutral') {
+                        document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
+                    } else if (emotion === 'Negative') {
+                        document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
                     }
                 }, 2000); // 2 second delay
             }
         });
+
     </script>
 </body>
 </html>

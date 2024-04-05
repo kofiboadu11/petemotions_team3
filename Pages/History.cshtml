@@ -59,36 +59,46 @@ new Chart("myChart", {
 
 </div>
    
+<!-- <script src="fullcalendar/dist/index.global.js"></script>
+<script> -->
+
 <div class = "child" style = "width:500px; float:right;">
- <script>
+ <script> 
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
+          selectable: true,
+          eventClick: function(info) {
+                     alert('On this day, your pets emotion was: ' + info.event.title);
+                  
+                     info.el.style.borderColor = 'red';
+                    
+          },
           events: [
           {
             id: 'a',
             daysOfWeek : ['1', '4'],
             title: 'sad',
-            startRecur: '2024-03-04', 
-            endRecur: '2024-03-31',
+            startRecur: '2024-04-01', 
+            endRecur: '2024-04-30',
             backgroundColor: '#0000FF'
           },
           {
             id: 'b',
             daysOfWeek : ['2', '5'],
             title: 'happy',
-            startRecur: '2024-03-04',
-            endRecur: '2024-03-31',
+            startRecur: '2024-04-01',
+            endRecur: '2024-04-30',
             backgroundColor: '#355e3b'
           }, 
           {
             id: 'c',
             daysOfWeek : ['3', '6'],
             title: 'angry',
-            startRecur: '2024-03-04',
-            endRecur: '2024-03-31', 
+            startRecur: '2024-04-01',
+            endRecur: '2024-04-30', 
            // endTime: '11:59'
            backgroundColor: '#FF0000'
           },
@@ -96,8 +106,8 @@ new Chart("myChart", {
             id: 'd',
             daysOfWeek : ['0'],
             title: 'other',
-            startRecur: '2024-03-03',
-            endRecur: '2024-03-31', 
+            startRecur: '2024-04-01',
+            endRecur: '2024-04-30', 
            // endTime: '11:59'
            backgroundColor: '#800080'
           }
@@ -124,4 +134,5 @@ new Chart("myChart", {
   </body>
 </div>
 </div>
+
 
