@@ -21,7 +21,7 @@ public class FileUploadModel : PageModel
         _context = context;
     }
 
-    public async Task<IActionResult> OnPost(IFormFile FileUpload)
+    public async Task<IActionResult> OnPost(IFormFile FileUpload, String EmotionString)
     {   
         using (var memoryStream = new MemoryStream())
         {
@@ -34,6 +34,12 @@ public class FileUploadModel : PageModel
                 {
                     FileContent = memoryStream.ToArray(),
                     fileDate = DateTime.UtcNow,
+                    emotion = EmotionString switch {
+                        "Happy" => Emotions.Happy,
+                        "Sad" => Emotions.Sad,
+                        "Angry" => Emotions.Angry,
+                        "Other" => Emotions.Other
+                    },
                 };
             _context.FileUpload.Add(file);
             await _context.SaveChangesAsync();

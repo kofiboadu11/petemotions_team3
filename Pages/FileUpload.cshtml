@@ -153,27 +153,9 @@ public string GetAntiXsrfRequestToken()
                 document.getElementById('emotionContent').innerHTML = "Thinking...";
                 document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
 
-                var formData = new FormData();
-                formData.append('FileUpload', file);
-                var currentDate = new Date();
-                var currentTime = currentDate.toLocaleString();
                 var emotion = "";
                 //formData.append('timestamp', currentTime);
 
-                $.ajax({
-                    url: '',
-                    headers:
-                    {
-                        "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-                    },
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    type: 'post',
-                    //success: function () {
-                    //    alert('Uploaded by jQuery');
-                    //}
-                });
 
                 // Display loading overlay
 
@@ -201,18 +183,37 @@ public string GetAntiXsrfRequestToken()
                         console.log(resultIndex);
                         switch(resultIndex) {
                             case 0:
-                                emotion = "Angry";
+                                emotion = 'Angry';
                                 break;
                             case 1:
-                                emotion = "Happy";
+                                emotion = 'Happy';
                                 break;
                             case 2:
-                                emotion = "Other";
+                                emotion = 'Other';
                                 break;
                             case 3:
-                                emotion = "Sad";
+                                emotion = 'Sad';
                                 break;
                         }
+                        var formData = new FormData();
+                        var currentDate = new Date();
+                        var currentTime = currentDate.toLocaleString();
+                        formData.append('FileUpload', file);
+                        formData.append('EmotionString', emotion);
+                        $.ajax({
+                            url: '',
+                            headers:
+                            {
+                                "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                            },
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            type: 'post',
+                            //success: function () {
+                            //    alert('Uploaded by jQuery');
+                            //}
+                        });
                     }
                 };
                 reader.readAsDataURL(file);
@@ -227,11 +228,11 @@ public string GetAntiXsrfRequestToken()
                     document.getElementById('emotionContent').innerHTML = emotion;
 
                     // Change emotion box color based on emotion
-                    if (emotion === "Positive") {
+                    if (emotion === 'Positive') {
                         document.getElementById('emotionBox').style.backgroundColor = "#7dc17d";
-                    } else if (emotion === "Neutral") {
+                    } else if (emotion === 'Neutral') {
                         document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
-                    } else if (emotion === "Negative") {
+                    } else if (emotion === 'Negative') {
                         document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
                     }
                 }, 2000); // 2 second delay
