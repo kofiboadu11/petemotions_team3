@@ -1,5 +1,5 @@
 ﻿@page
-@model PetEmotionsApp.Pages.Pages_FileUpload
+@model FileUploadModel
 
 @{
     ViewData["Title"] = "PetVibes - Upload";
@@ -14,128 +14,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <style>
-        #imagePreview {
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        #imageContainer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 450px; /* Adjust this value as needed */
-        }
-
-        #loadingOverlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
-
-        #emotionBox {
-            display: none;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            max-width: 300px;
-            text-align: center;
-            position: absolute;
-            top: 50px;
-            background-color: #ced4da; /* Default color */
-        }
-
-        #emotionTitle {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/styles.css">
 </head>
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+<body style="background-color: #222831;">
+    <div class="fileUpload">
+        <div class="container">
+            <div class="row justify-content-center">
                 <div class="text-center">
                     <form id="uploadForm" enctype="multipart/form-data">
-                        <label class="form-label" for="customFile">Preferred file formats are .PNG and .JPG, please keep image size below 2MB!</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="customFile" accept=".png, .jpg" aria-describedby="uploadBtn">
-                            <div class="input-group-append">
+                        <label class="form-label" style="color: white;" for="customFile">Preferred file formats are .PNG and .JPG, please keep image size below 2MB!</label>
+                        <div class="upload_buttongroup">
+                            <input type="file" class="upload_buttonL" id="customFile" accept=".png, .jpg" aria-describedby="uploadBtn">
+                            <div class="upload_buttonR">
                                 <button class="btn btn-primary" type="button" id="uploadBtn">Upload</button>
                             </div>
                         </div>
+
                         <small id="fileSizeError" class="text-danger" style="display: none;">File size exceeds 2MB limit.</small>
                         <small id="fileTypeError" class="text-danger" style="display: none;">Please select a file with .png or .jpg extension.</small>
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-8">
-                <div id="imagePreview" class="text-center" style="display: none;">
-                    <div id="loadingOverlay">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="upload_imagePreview text-center" style="display: none;">
+                        <div class="upload_imageContainer">
+                            <div class="upload_spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <img id="previewImg" class="img-fluid" alt="Preview Image">
                         </div>
                     </div>
-                    <div id="emotionBox" class="text-center">
-                        <p id="emotionTitle">Emotion Detected:</p>
-                        <p id="emotionContent">Thinking...</p>
-                    </div>
-                    <div id="imageContainer">
-                        <img id="previewImg" class="img-fluid" alt="Preview Image">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="upload_emotionBox text-center" style="display: none;">
+                        <p class="upload_emotionTitle">Emotion Detected: <span id="emotionContent">Thinking...</span></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        //TODO: move the model stuff to it's own file/function to be referenced
-        async function preprocess(imageData) {
-            let imageTensor = tf.browse.fromPixels(imageData);
-            const offset = tf.scalar(255.0);
-            const normalized = tf.scalar(1.0).sub(resized.div(offset));
-            //may need to change dimensions of input
-            return normalized;
-        }
-        async function loadModel() {
-            return tf.loadLayersModel('tfjs_petemo/model.json');
-        }
-        async function prediction(image) {
-            const model = await loadModel();
-            const imageTensor = preprocess(image);
-            let result = model.predict(imageTensor);
-            console.log(result);
-        }
 
-        /* on page load (for debugging)
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("hi");
-            prediction();
-            
-        });
-        */
+
+    <script>
         document.getElementById('uploadBtn').addEventListener('click', function () {
             var fileInput = document.getElementById('customFile');
             var file = fileInput.files[0]; // Get the selected file
             var fileSize = file.size; // Size in bytes
             var maxSize = 2 * 1024 * 1024; // 2MB in bytes
             var allowedExtensions = ['png', 'jpg'];
-
-            
 
             if (fileSize > maxSize) {
                 document.getElementById('fileSizeError').style.display = 'block';
@@ -147,7 +78,7 @@
 
                 // Reset emotion content to "Thinking..." and color to grey
                 document.getElementById('emotionContent').innerHTML = "Thinking...";
-                document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
+                document.querySelector('.upload_emotionBox').style.backgroundColor = "#ced4da";
 
                 var formData = new FormData();
                 formData.append('file', file);
@@ -155,44 +86,43 @@
                 var currentTime = currentDate.toLocaleString();
                 formData.append('timestamp', currentTime);
 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/FileUpload');
-                xhr.send(formData);
+                // var xhr = new XMLHttpRequest();
+                // xhr.open('POST', '/FileUpload');
+                // xhr.send(formData);
 
                 // Display loading overlay
-                document.getElementById('loadingOverlay').style.display = 'flex';
+                document.querySelector('.upload_imageContainer img').style.filter = 'grayscale(70%)';
+                document.querySelector('.upload_spinner-border').style.display = 'block';
 
                 // Display image preview
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var img = document.getElementById('previewImg');
                     img.src = event.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
+                    document.querySelector('.upload_imagePreview').style.display = 'block';
                     // Display emotion box after image upload
-                    document.getElementById('emotionBox').style.display = 'block';
+                    document.querySelector('.upload_emotionBox').style.display = 'block';
 
                     img.onload = function () {
-                        
                         console.log(img.width + 'x' + img.height);
                         let tensor = tf.browser.fromPixels(img)
                             .resizeNearestNeighbor([224, 224])
                             .expandDims();
-                        //LOOK AT THIS PART. currently taking too long to load model so prediction can't be done. find a way to wait for model to load first
-                        (async() => {
+
+                        (async () => {
                             const model = await tf.loadLayersModel('tfjs_petemo/model.json');
                             let predictions = model.predict(tensor).data();
-                            console.log(predictions);                            
+                            console.log(predictions);
                         })();
                     }
-                    
-                    
                 };
                 reader.readAsDataURL(file);
 
                 // Simulate server response delay (remove this in actual implementation)
                 setTimeout(function () {
                     // Hide loading overlay
-                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.querySelector('.upload_imageContainer img').style.filter = 'grayscale(0%)';
+                    document.querySelector('.upload_spinner-border').style.display = 'none';
 
                     // Replace "Thinking..." with actual emotion received from server
                     var emotion = "Positive"; // Set manually for now, will be replaced once we get emotion from server
@@ -200,11 +130,11 @@
 
                     // Change emotion box color based on emotion
                     if (emotion === "Positive") {
-                        document.getElementById('emotionBox').style.backgroundColor = "#7dc17d";
+                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#7dc17d";
                     } else if (emotion === "Neutral") {
-                        document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
+                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#ced4da";
                     } else if (emotion === "Negative") {
-                        document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
+                        document.querySelector('.upload_emotionBox').style.backgroundColor = "#dc7f7f";
                     }
                 }, 2000); // 2 second delay
             }
