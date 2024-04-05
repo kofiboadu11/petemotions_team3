@@ -342,3 +342,126 @@
   transition:0.2s ease-in;
   cursor:pointer;
 }
+
+.fileUpload {
+    background-color: #222831;
+
+}
+
+.upload__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload_imagePreview {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.upload_imageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px; /* Adjust this value as needed */
+    position: relative; /* Ensure relative positioning for absolute children */
+}
+
+.upload_emotionBox {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 600px;
+    text-align: center;
+    position: relative; /* Position the emotion box relative to its parent */
+    background-color: #ced4da; /* Default color */
+}
+
+.upload_emotionTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+.upload_imageContainer {
+    position: relative; /* Ensure the container's position is set to relative */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px; /* Adjust this value as needed */
+    overflow: hidden; /* Hide any content that overflows the container */
+}
+
+.upload_emotionBox {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 300px;
+    text-align: center;
+    position: absolute; /* Position the emotion box absolutely */
+    bottom: 10px; /* Adjust as needed */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+    background-color: #ced4da; /* Default color */
+}
+
+.upload_emotionTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.upload_spinner-border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: 3rem;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    z-index: 1;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+
+
+
+
+.upload__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-self: center;
+    height: 90vh;
+    width: 100%;
+    max-width: 1300px;
+    padding: 0 50px;
+}
+
+.upload_buttongroup {
+    text-align: center;
+}
+
+.upload_buttonL {
+    background-color: #fff;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.upload_buttonR {
+    display: inline-block;
+}

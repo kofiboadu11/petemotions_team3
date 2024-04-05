@@ -1,0 +1,70 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|x:\\program files (x86)\\unity\\petemotions_team3\\pages\\fileupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|solutionrelative:pages\\fileupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|x:\\program files (x86)\\unity\\petemotions_team3\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|x:\\program files (x86)\\unity\\petemotions_team3\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5D653C7F-ECF0-4CD7-AE96-CB56A424BC2B}|PetEmotionsApp.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FileUpload.cshtml",
+              "DocumentMoniker": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\Pages\\FileUpload.cshtml",
+              "RelativeDocumentMoniker": "Pages\\FileUpload.cshtml",
+              "ToolTip": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\Pages\\FileUpload.cshtml",
+              "RelativeToolTip": "Pages\\FileUpload.cshtml",
+              "ViewState": "AQIAADkAAAAAAAAAAAD4v1cAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-04-03T23:37:34.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "site.css",
+              "DocumentMoniker": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AQIAAGgAAAAAAAAAAAAuwDABAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-04-04T00:16:44.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\Pages\\Index.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Index.cshtml",
+              "ToolTip": "X:\\Program Files (x86)\\Unity\\petemotions_team3\\Pages\\Index.cshtml",
+              "RelativeToolTip": "Pages\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAAHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-04-03T23:50:46.909Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
