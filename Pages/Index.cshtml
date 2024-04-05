@@ -11,15 +11,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="index">
+
     <div class="container">
-        <div class="text-center">
-            <h1 class="display-4">Welcome to PetVibes</h1>
-            <p class="lead">Get insights into your pet's emotions based off our Machine Learning algorithm!</p>
-            <p>Create an account to save past images or click below to start uploading now.</p>
-            <a href="/FileUpload" class="btn btn-primary">Get Started</a>
+        <div class="index__container">
+            <div class="main__content">
+
+            
+            <h1>Learn<br> About Your Pet</h1>
+            <p>Get insights into your pet's emotions based off our Machine Learning algorithm!</p>
+            <button class="index__btn"><a href="/FileUpload" style="text-decoration:none">Get Started</a></button>
+
+            </div>
+            <div class="main__index--container">
+                <img src="images/pic1.svg" alt="pic" id="index__img"/>    
+            </div>
         </div>
-    </div>
+           
+        </div>
+        <div class="services">
+            <h1>Learn More</h1>
+            <div class="services__container">
+                <div class="services__card">
+                    <h2>Create and Account</h2>
+                    <p>Save Your Pets Emotions</p>
+                    <button class="service_button"><a href="/Login" style="text-decoration:none">Get Started</a></button>
+                </div>
+                <div class="services__card">
+                    <h2>View Your Pets History</h2>
+                    <p>See How They Feel Over Time</p>
+                    <button class="service_button"><a href="/History" style="text-decoration:none">Get Started</a></button>
+                </div>
+                <div class="services__card">
+                    <h2>Upload A Picture</h2>
+                    <p>Let Our Algorithm Go To Work</p>
+                    <button class="service_button"><a href="/FileUpload" style="text-decoration:none">Get Started</a></button>
+                </div>
+            </div>
+        </div>
+        </div>
+    
 </body>
 </html>
