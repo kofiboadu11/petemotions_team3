@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Owner\\Desktop\\Big Project\\petemotions_team3\\wwwroot\\images\\cutecat.jpg",
+      "PackagePath": "staticwebassets\\images\\cutecat.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Owner\\Desktop\\Big Project\\petemotions_team3\\wwwroot\\images\\cutecat2.jpg",
+      "PackagePath": "staticwebassets\\images\\cutecat2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Owner\\Desktop\\Big Project\\petemotions_team3\\wwwroot\\images\\cutedog.jpg",
+      "PackagePath": "staticwebassets\\images\\cutedog.jpg"
+    },
+    {
       "Id": "C:\\Users\\Owner\\Desktop\\Big Project\\petemotions_team3\\wwwroot\\images\\pic1.svg",
       "PackagePath": "staticwebassets\\images\\pic1.svg"
     },
