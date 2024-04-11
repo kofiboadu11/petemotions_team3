@@ -25,18 +25,18 @@ https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
 
 <div class="text-center">
 
-    <h1 class="display-4">History page</h1>
+    <h1 class="display-4" style = "color: white">Your Pets Monthly Reports</h1>
     
 </div>
 
-<div class = "parent" style = "width:1000px;">
-<div class = "child" style = "width:500px; float:left;">
+<div class = "history_container">
+<div class = "piechart-container">
   <canvas id="myChart" width="200" height="100" ></canvas>
 
   <script>
 const xValues = ["Happy", "Sad", "Angry", "Other"];
 const yValues = [12, 8, 9, 10];
-const barColors = ["green", "blue","red", "purple"];
+const barColors = ["#F78D7D", "#9BB9C3","#CB9897", "#FFCCBB"];
 
 new Chart("myChart", {
   type: "pie",
@@ -44,13 +44,15 @@ new Chart("myChart", {
     labels: xValues,
     datasets: [{
       backgroundColor: barColors,
-      data: yValues
+      data: yValues,
+      color: '#ffffff',
     }]
   },
   options: {
     title: {
       display: true,
-      text: "Emotions Breakdown"
+      text: "Emotions Breakdown",
+      color: '#ffffff',
     }
   }
 });
@@ -62,7 +64,7 @@ new Chart("myChart", {
 <!-- <script src="fullcalendar/dist/index.global.js"></script>
 <script> -->
 
-<div class = "child" style = "width:500px; float:right;">
+<div class = "calendar-container">
  <script> 
 
       document.addEventListener('DOMContentLoaded', function() {
@@ -83,7 +85,7 @@ new Chart("myChart", {
             title: 'sad',
             startRecur: '2024-04-01', 
             endRecur: '2024-04-30',
-            backgroundColor: '#0000FF'
+            backgroundColor: '#9BB9C3'
           },
           {
             id: 'b',
@@ -91,7 +93,7 @@ new Chart("myChart", {
             title: 'happy',
             startRecur: '2024-04-01',
             endRecur: '2024-04-30',
-            backgroundColor: '#355e3b'
+            backgroundColor: '#F78D7D'
           }, 
           {
             id: 'c',
@@ -100,7 +102,7 @@ new Chart("myChart", {
             startRecur: '2024-04-01',
             endRecur: '2024-04-30', 
            // endTime: '11:59'
-           backgroundColor: '#FF0000'
+           backgroundColor: '#CB9897'
           },
           {
             id: 'd',
@@ -109,9 +111,11 @@ new Chart("myChart", {
             startRecur: '2024-04-01',
             endRecur: '2024-04-30', 
            // endTime: '11:59'
-           backgroundColor: '#800080'
+           backgroundColor: '#FFCCBB'
           }
-          ]
+          ],
+          textColor: 'white'
+
         });
         var event1 = calendar.getEventById('a')
         var event2 = calendar.getEventById('b')
@@ -129,8 +133,8 @@ new Chart("myChart", {
       });
 
     </script>
-<body>
-    <div id='calendar'></div>
+<body style="background-color: #222831;">
+    <div id='calendar' ></div>
   </body>
 </div>
 </div>

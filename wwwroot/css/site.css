@@ -465,3 +465,29 @@
 .upload_buttonR {
     display: inline-block;
 }
+
+.calendar_container {
+  background-size: 100%;
+  background-color: white;
+  margin-bottom:5rem;
+}
+
+.piechart_container{
+  background-size: 100%;
+  color: white;
+  margin-bottom:5rem;
+}
+
+.history_container{
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  width:100%;
+  max-width:1300px;
+  padding: 0 50px;
+  align-items:center;
+  margin-bottom: 20rem;
+}
+
+div#calendar .fc-header-title h2 {
+  color: #FFF;
+  }
