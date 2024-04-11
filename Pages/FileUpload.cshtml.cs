@@ -21,11 +21,11 @@ public class FileUploadModel : PageModel
         _context = context;
     }
 
-    public async Task<IActionResult> OnPost(IFormFile FileUpload, String EmotionString)
+    public async Task<IActionResult> OnPost(IFormFile File, String EmotionString)
     {   
         using (var memoryStream = new MemoryStream())
         {
-            await FileUpload.CopyToAsync(memoryStream);
+            await File.CopyToAsync(memoryStream);
 
             // Upload the file if less than 2 MB
             if (memoryStream.Length < 2097152)
@@ -40,6 +40,8 @@ public class FileUploadModel : PageModel
                         "Angry" => Emotions.Angry,
                         "Other" => Emotions.Other
                     },
+                    type = File.ContentType,
+                    name = File.FileName,
                 };
             _context.FileUpload.Add(file);
             await _context.SaveChangesAsync();
