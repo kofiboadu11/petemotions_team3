@@ -1,4 +1,5 @@
 using Humanizer.Localisation;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace PetEmotionsApp.Models
@@ -14,6 +15,12 @@ namespace PetEmotionsApp.Models
 
         [Display(Name = "Emotions")]
         public Emotions emotion {get; set;}
+
+        [Display(Name = "FileType")]
+        public string type {get; set;}
+
+        [Display(Name = "FileName")]
+        public string name {get; set;}
     }
     //for whatever reason its overcomplicated to do enums for me
     public enum Emotions

@@ -40,6 +40,8 @@ public class FileUploadModel : PageModel
                         "Angry" => Emotions.Angry,
                         "Other" => Emotions.Other
                     },
+                    type = FileUpload.ContentType,
+                    name = FileUpload.FileName,
                 };
             _context.FileUpload.Add(file);
             await _context.SaveChangesAsync();
