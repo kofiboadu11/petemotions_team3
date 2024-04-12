@@ -27,6 +27,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileUpload[0].type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileUpload[0].name)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +48,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.emotion)
             </td>
+            <th>
+                @Html.DisplayFor(model => item.type)
+            </th>
+            <th>
+                @Html.DisplayFor(model => item.name)
+            </th>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
