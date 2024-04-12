@@ -488,6 +488,6 @@
   margin-bottom: 20rem;
 }
 
-div#calendar .fc-header-title h2 {
+.fc-toolbar-title{
   color: #FFF;
   }

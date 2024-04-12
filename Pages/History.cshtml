@@ -23,6 +23,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
 "></script>
 
+
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="text-center">
 
     <h1 class="display-4" style = "color: white">Your Pets Monthly Reports</h1>
@@ -30,8 +34,8 @@ https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
 </div>
 
 <div class = "history_container">
-<div class = "piechart-container">
-  <canvas id="myChart" width="200" height="100" ></canvas>
+<div class = "piechart-container" >
+  <canvas id="myChart" width="250" height="150" ></canvas>
 
   <script>
 const xValues = ["Happy", "Sad", "Angry", "Other"];
@@ -52,7 +56,13 @@ new Chart("myChart", {
     title: {
       display: true,
       text: "Emotions Breakdown",
-      color: '#ffffff',
+      fontColor: 'white',
+      fontSize: 20
+    },
+    legend:{
+      labels: {
+        fontColor: "white"
+      }
     }
   }
 });
@@ -66,61 +76,34 @@ new Chart("myChart", {
 
 <div class = "calendar-container">
  <script> 
+      
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          selectable: true,
-          eventClick: function(info) {
-                     alert('On this day, your pets emotion was: ' + info.event.title);
-                  
-                     info.el.style.borderColor = 'red';
-                    
-          },
-          events: [
-          {
-            id: 'a',
-            daysOfWeek : ['1', '4'],
-            title: 'sad',
-            startRecur: '2024-04-01', 
-            endRecur: '2024-04-30',
-            backgroundColor: '#9BB9C3'
-          },
-          {
-            id: 'b',
-            daysOfWeek : ['2', '5'],
-            title: 'happy',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30',
-            backgroundColor: '#F78D7D'
-          }, 
-          {
-            id: 'c',
-            daysOfWeek : ['3', '6'],
-            title: 'angry',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30', 
-           // endTime: '11:59'
-           backgroundColor: '#CB9897'
-          },
-          {
-            id: 'd',
-            daysOfWeek : ['0'],
-            title: 'other',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30', 
-           // endTime: '11:59'
-           backgroundColor: '#FFCCBB'
-          }
-          ],
-          textColor: 'white'
+        var feedUrl = '/History/MyFeed'; 
+        $.ajax({
+            url: feedUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
 
-        });
-        var event1 = calendar.getEventById('a')
-        var event2 = calendar.getEventById('b')
-        var event3 = calendar.getEventById('c')
-        var event4 = calendar.getEventById('d')
+                console.log(data);
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    selectable: true,
+                    eventClick: function(info) {
+                        alert('On this day, your pet\'s emotion was: ' + info.event.title);
+                        info.el.style.borderColor = 'red';
+                    },
+                    events: data,
+                    textColor: 'white'
+                });
+       // var event1 = calendar.getEventById('a')
+       // var event2 = calendar.getEventById('b')
+      //  var event3 = calendar.getEventById('c')
+      //  var event4 = calendar.getEventById('d')
+
+
        //var start1 = event1.start
         //var start2 = event2.startRecur
       //  var end2 = event2.endRecur
@@ -130,11 +113,18 @@ new Chart("myChart", {
       //  console.log(start1.toISOString())
       // console.log(start2.toISOString())
         calendar.render();
+         },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch JSON feed:', error);
+            }
       });
-
+});
     </script>
-<body style="background-color: #222831;">
-    <div id='calendar' ></div>
+<body style="background-color: #222831;" class = "fc-toolbar-title">
+  <a id="feedUrl" href="/History/MyFeed" style="display: none;"></a>
+    <div 
+    id='calendar'
+     ></div>
   </body>
 </div>
 </div>
