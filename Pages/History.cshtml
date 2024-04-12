@@ -1,4 +1,4 @@
-@page
+@page "/History/{param?}"
 @model HistoryModel
 @{
     ViewData["Title"] = "History page";
@@ -23,20 +23,24 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
 "></script>
 
+
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="text-center">
 
-    <h1 class="display-4">History page</h1>
+    <h1 class="display-4" style = "color: white">Your Pets Monthly Reports</h1>
     
 </div>
 
-<div class = "parent" style = "width:1000px;">
-<div class = "child" style = "width:500px; float:left;">
-  <canvas id="myChart" width="200" height="100" ></canvas>
+<div class = "history_container">
+<div class = "piechart-container" >
+  <canvas id="myChart" width="250" height="150" ></canvas>
 
   <script>
 const xValues = ["Happy", "Sad", "Angry", "Other"];
 const yValues = [12, 8, 9, 10];
-const barColors = ["green", "blue","red", "purple"];
+const barColors = ["#F78D7D", "#9BB9C3","#CB9897", "#FFCCBB"];
 
 new Chart("myChart", {
   type: "pie",
@@ -44,13 +48,21 @@ new Chart("myChart", {
     labels: xValues,
     datasets: [{
       backgroundColor: barColors,
-      data: yValues
+      data: yValues,
+      color: '#ffffff',
     }]
   },
   options: {
     title: {
       display: true,
-      text: "Emotions Breakdown"
+      text: "Emotions Breakdown",
+      fontColor: 'white',
+      fontSize: 20
+    },
+    legend:{
+      labels: {
+        fontColor: "white"
+      }
     }
   }
 });
@@ -62,61 +74,36 @@ new Chart("myChart", {
 <!-- <script src="fullcalendar/dist/index.global.js"></script>
 <script> -->
 
-<div class = "child" style = "width:500px; float:right;">
+<div class = "calendar-container">
  <script> 
+      
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          selectable: true,
-          eventClick: function(info) {
-                     alert('On this day, your pets emotion was: ' + info.event.title);
-                  
-                     info.el.style.borderColor = 'red';
-                    
-          },
-          events: [
-          {
-            id: 'a',
-            daysOfWeek : ['1', '4'],
-            title: 'sad',
-            startRecur: '2024-04-01', 
-            endRecur: '2024-04-30',
-            backgroundColor: '#0000FF'
-          },
-          {
-            id: 'b',
-            daysOfWeek : ['2', '5'],
-            title: 'happy',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30',
-            backgroundColor: '#355e3b'
-          }, 
-          {
-            id: 'c',
-            daysOfWeek : ['3', '6'],
-            title: 'angry',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30', 
-           // endTime: '11:59'
-           backgroundColor: '#FF0000'
-          },
-          {
-            id: 'd',
-            daysOfWeek : ['0'],
-            title: 'other',
-            startRecur: '2024-04-01',
-            endRecur: '2024-04-30', 
-           // endTime: '11:59'
-           backgroundColor: '#800080'
-          }
-          ]
-        });
-        var event1 = calendar.getEventById('a')
-        var event2 = calendar.getEventById('b')
-        var event3 = calendar.getEventById('c')
-        var event4 = calendar.getEventById('d')
+        var feedUrl = '/History/MyFeed'; 
+        $.ajax({
+            url: feedUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+
+                console.log(data);
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    selectable: true,
+                    eventClick: function(info) {
+                        alert('On this day, your pet\'s emotion was: ' + info.event.title);
+                        info.el.style.borderColor = 'red';
+                    },
+                    events: data,
+                    textColor: 'white'
+                });
+       // var event1 = calendar.getEventById('a')
+       // var event2 = calendar.getEventById('b')
+      //  var event3 = calendar.getEventById('c')
+      //  var event4 = calendar.getEventById('d')
+
+
        //var start1 = event1.start
         //var start2 = event2.startRecur
       //  var end2 = event2.endRecur
@@ -126,11 +113,18 @@ new Chart("myChart", {
       //  console.log(start1.toISOString())
       // console.log(start2.toISOString())
         calendar.render();
+         },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch JSON feed:', error);
+            }
       });
-
+});
     </script>
-<body>
-    <div id='calendar'></div>
+<body style="background-color: #222831;" class = "fc-toolbar-title">
+  <a id="feedUrl" href="/History/MyFeed" style="display: none;"></a>
+    <div 
+    id='calendar'
+     ></div>
   </body>
 </div>
 </div>
