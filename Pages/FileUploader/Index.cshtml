@@ -5,57 +5,86 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 style="color: white;">Picture Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="../FileUpload" >Upload New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].FileContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].fileDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.FileUpload) {
-        <tr>
-            <td>
-                    <img src="data:image;base64,@System.Convert.ToBase64String(item.FileContent)" width="224"
-                         height="224" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fileDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.emotion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<style>
+    table{
+        font-family: Arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    a:link {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+</style>
+
+<body style="background-color: #222831;">
+    <table class="table" style="color: white;">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileUpload[0].FileContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileUpload[0].fileDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileUpload[0].type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileUpload[0].name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.FileUpload) {
+            <tr>
+                <td>
+                        <img src="data:image;base64,@System.Convert.ToBase64String(item.FileContent)" width="224"
+                             height="224" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fileDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emotion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</body>
