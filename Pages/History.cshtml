@@ -1,5 +1,5 @@
 @page
-@model PetEmotionsApp.Pages_FileUploader.HistoryModel
+@model HistoryModel
 @{
     ViewData["Title"] = "History page";
 }
@@ -12,57 +12,6 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
-<h1>Files</h1>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].FileContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].fileDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].emotion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileUpload[0].name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.FileUpload) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fileDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.emotion)
-            </td>
-            <th>
-                @Html.DisplayFor(model => item.type)
-            </th>
-            <th>
-                @Html.DisplayFor(model => item.name)
-            </th>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
 
 <!-- Chart.js-->
 <script
@@ -182,7 +131,6 @@ new Chart("myChart", {
     </script>
 <body>
     <div id='calendar'></div>
-    
   </body>
 </div>
 </div>
