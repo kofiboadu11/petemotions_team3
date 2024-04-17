@@ -1,0 +1,110 @@
+@page
+@model LiveSteamModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+public string GetAntiXsrfRequestToken()
+{
+    return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+}
+}
+
+@{
+    ViewData["Title"] = "PetVibes - Livestream";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--importing tensorflow js -->
+    <script src="https://cdn.jsdelivr.net/npm/@@tensorflow/tfjs@@4.17.0/dist/tf.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/styles.css">
+</head>
+
+<body style="background-color: #222831;">
+    <form method="post">
+    <!-- your inputs-->
+    </form>
+    <div class="fileUpload">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="text-center">
+                    <form id="broadcastForm" enctype="multipart/form-data">
+                        <label class="form-label" style="color: white;" for="customFile">Press the button below to start broadcasting an attached camera</label>
+                        <div class="broadcast_buttongroup">
+                            <div class="broadcast_buttonR">
+                                <button class="btn btn-primary" type="button" id="broadcastBtn">Start stream</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="broadcast_imagePreview text-center" style="display: none;">
+                        <div class="broadcast_imageContainer">
+                            <div class="broadcast_spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <img id="previewImg" class="img-fluid" alt="Preview Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="broadcast_emotionBox text-center" style="display: none;">
+                        <p class="broadcast_emotionTitle">Emotion Detected: <span id="emotionContent">Thinking...</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    	<video id="vid"></video>
+    </div>
+
+    <script>
+        //TODO: move the model stuff to it's own file/function to be referenced
+        async function preprocess(imageData) {
+            let imageTensor = tf.browse.fromPixels(imageData);
+            const offset = tf.scalar(255.0);
+            const normalized = tf.scalar(1.0).sub(resized.div(offset));
+            //may need to change dimensions of input
+            return normalized;
+        }
+        async function loadModel() {
+            return tf.loadLayersModel('tfjs_petemo/model.json');
+        }
+        async function prediction(tensor) {
+            const model = await loadModel();
+            let result = model.predict(tensor).data();
+            //console.log(result);
+            return result;
+        }
+        document.getElementById('broadcastBtn').addEventListener('click', function () {
+	let video = document.getElementById("vid");
+	    let mediaDevices = navigator.mediaDevices;
+	    mediaDevices
+                .getUserMedia({
+                    video: true,
+                    audio: true,
+                })
+                .then((stream) => {
+                    // Changing the source of video to current stream.
+                    video.srcObject = stream;
+                    video.addEventListener("loadedmetadata", () => {
+                        video.play();
+                    });
+		    }).catch(alert);
+                
+            }
+        );
+
+    </script>
+</body>
+</html>
