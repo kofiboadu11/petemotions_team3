@@ -38,10 +38,33 @@ https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js
   <canvas id="myChart" width="250" height="150" ></canvas>
 
   <script>
-const xValues = ["Happy", "Sad", "Angry", "Other"];
-const yValues = [12, 8, 9, 10];
-const barColors = ["#F78D7D", "#9BB9C3","#CB9897", "#FFCCBB"];
+  let happyCount = 0;
+  let sadCount = 0;
+  let angryCount = 0;
+  let otherCount = 0;
 
+  const fileUploadData = @Html.Raw(Json.Serialize(Model.FileUpload));
+  fileUploadData.forEach(item => {
+		  console.log("Processing emotion:", item.emotion);
+	switch (item.emotion) {
+		case 0:
+		  happyCount++;
+		  break;
+		case 1:
+		  sadCount++;
+		  break;
+		case 2:
+		  angryCount++;
+		  break;
+		default:
+		  otherCount++;
+		  break;
+	}
+  });
+
+const xValues = ["Happy", "Sad", "Angry", "Other"];
+const yValues = [happyCount, sadCount, angryCount, otherCount];
+const barColors = ["#F78D7D", "#9BB9C3","#CB9897", "#FFCCBB"];
 new Chart("myChart", {
   type: "pie",
   data: {

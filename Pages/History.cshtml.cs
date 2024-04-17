@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging; // Import ILogger
+using Microsoft.EntityFrameworkCore;
+using PetEmotionsApp.Data;
+using PetEmotionsApp.Models;
 
 namespace PetEmotionsApp.Pages;
 
@@ -11,12 +14,13 @@ public class HistoryModel : PageModel
 {
   //  private readonly ILogger<HistoryModel> _logger;
 
-  private readonly ILogger<HistoryModel> _logger; // Declare ILogger<T> field
+	private readonly PetEmotionsApp.Data.PetEmotionsAppContext _context;
+	public IList<FileUpload> FileUpload { get;set; } = default!;
 
-        public HistoryModel(ILogger<HistoryModel> logger) // Inject ILogger<T> via constructor injection
-        {
-            _logger = logger;
-        }
+	public HistoryModel(PetEmotionsApp.Data.PetEmotionsAppContext context)
+	{
+		_context = context;
+	}
 
 
   public class calendarEvent {
@@ -30,7 +34,6 @@ public class HistoryModel : PageModel
     public IActionResult OnGet([FromRoute] string param= null)
     {
     if (param == "MyFeed") {
-        _logger.LogDebug("OnGetMyFeed method called.");
         calendarEvent CalendarEvent = new calendarEvent();
         CalendarEvent.title = "happy";
         CalendarEvent.start = new DateTime(2024,4,11);
@@ -43,6 +46,7 @@ public class HistoryModel : PageModel
         return new JsonResult(new[] { CalendarEvent });
     }
 	else { 
+	FileUpload = _context.FileUpload.ToList();
 	return Page();
 	}
     }
