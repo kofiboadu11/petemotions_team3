@@ -64,14 +64,22 @@ public string GetAntiXsrfRequestToken()
             </div>
         </div>
     </div>
-    <div>
-    	<video id="vid"></video>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="text-center">
+                <video id="vid" class="img-fluid"></video>
+            </div>
+        </div>
     </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         //TODO: move the model stuff to it's own file/function to be referenced
         async function preprocess(imageData) {
             let imageTensor = tf.browse.fromPixels(imageData);
+            const ctx = canvas.getContext('2d');
             const offset = tf.scalar(255.0);
             const normalized = tf.scalar(1.0).sub(resized.div(offset));
             //may need to change dimensions of input
@@ -86,25 +94,55 @@ public string GetAntiXsrfRequestToken()
             //console.log(result);
             return result;
         }
+
+        // Live streaming when brodcast button clicked
         document.getElementById('broadcastBtn').addEventListener('click', function () {
-	let video = document.getElementById("vid");
+	    let video = document.getElementById("vid");
 	    let mediaDevices = navigator.mediaDevices;
 	    mediaDevices
                 .getUserMedia({
                     video: true,
-                    audio: true,
+                    audio: false,
                 })
                 .then((stream) => {
                     // Changing the source of video to current stream.
                     video.srcObject = stream;
                     video.addEventListener("loadedmetadata", () => {
                         video.play();
+                        // Start capturing snapshots every 5 seconds
+                        setInterval(captureSnapshot, 5000);
                     });
-		    }).catch(alert);
-                
+		    }).catch(alert); 
             }
         );
 
+        function captureSnapshot() {
+            // Get the video element
+            const video = document.getElementById('vid');
+
+            if (video) {
+                // temp canvas element
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Convert the canvas content to a data URL (image format)
+                const dataURL = canvas.toDataURL('image/png');
+
+                // For debugging
+                //console.log('Snapshot captured:', dataURL);
+
+                // Display the broadcast_imagePreview element
+                const previewImg = document.getElementById('previewImg');
+                previewImg.src = dataURL;
+                const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
+                imagePreviewContainer.style.display = 'block';
+            } else {
+                console.error('Element with ID "vid" (video element) not found.');
+            }
+        }
     </script>
 </body>
 </html>
