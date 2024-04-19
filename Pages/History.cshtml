@@ -103,51 +103,64 @@ new Chart("myChart", {
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var feedUrl = '/History/MyFeed'; 
-        $.ajax({
-            url: feedUrl,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-
-                console.log(data);
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    selectable: true,
-                    eventClick: function(info) {
-                        alert('On this day, your pet\'s emotion was: ' + info.event.title);
-                        info.el.style.borderColor = 'red';
-                    },
-                    events: data,
-                    textColor: 'white'
-                });
-       // var event1 = calendar.getEventById('a')
-       // var event2 = calendar.getEventById('b')
-      //  var event3 = calendar.getEventById('c')
-      //  var event4 = calendar.getEventById('d')
-
-
-       //var start1 = event1.start
-        //var start2 = event2.startRecur
-      //  var end2 = event2.endRecur
-       //var startTime2 = event2.startTime
-       
-       // var endTime = event.end
-      //  console.log(start1.toISOString())
-      // console.log(start2.toISOString())
-        calendar.render();
-         },
-            error: function(xhr, status, error) {
-                console.error('Failed to fetch JSON feed:', error);
+        var calendar=new FullCalendar.Calendar(calendarEl,{
+          initialView:'dayGridMonth',
+          events:{
+            url:'/History/MyFeed',
+            method:'GET',
+            failure:function(){
+              alert('Failed to fetch events');
             }
-      });
-});
+
+          },
+          eventClick: function(info){
+            var imageUrl = info.event.extendedProps.imageUrl;
+            var imgElement = document.createElement('img');
+            imgElement.src = 'data:image/jpeg;base64,' + imageUrl;
+            imgElement.style.maxWidth = '50%'; 
+            imgElement.style.height = 'auto';
+            var modal = document.getElementById('imageModal');
+            modal.querySelector('.modal-body').innerHTML = '';
+            modal.querySelector('.modal-body').appendChild(imgElement);
+            var myModal = new bootstrap.Modal(modal);
+            myModal.show();
+
+          }
+
+        });
+        
+
+               
+        calendar.render();
+         });
+
+
+
+         
+        
     </script>
+  
 <body style="background-color: #222831;" class = "fc-toolbar-title">
   <a id="feedUrl" href="/History/MyFeed" style="display: none;"></a>
     <div 
     id='calendar'
      ></div>
+  <div id="imageModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
   </body>
 </div>
 </div>
