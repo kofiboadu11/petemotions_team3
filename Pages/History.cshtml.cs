@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging; // Import ILogger
 using Microsoft.EntityFrameworkCore;
 using PetEmotionsApp.Data;
 using PetEmotionsApp.Models;
+using System.Globalization;
 
 namespace PetEmotionsApp.Pages;
 
@@ -28,26 +29,38 @@ public class HistoryModel : PageModel
 		public DateTime start {get; set;}
 		public DateTime end {get; set;}
 		public string color {get; set;}
+		public string imageUrl {get; set;}
 	}
 
 
 	public IActionResult OnGet([FromRoute] string param= null)
 	{
-		if (param == "MyFeed") {
-			calendarEvent CalendarEvent = new calendarEvent();
-			CalendarEvent.title = "happy";
-			CalendarEvent.start = new DateTime(2024,4,11);
-			CalendarEvent.end = new DateTime(2024,4,12);
-			CalendarEvent.color = "#F78D7D";
-			// string json = JsonConvert.SerializeObject(CalendarEvent);
+		if(param=="MyFeed")
+		{
+			FileUpload=_context.FileUpload.ToList();
+			var calendarEvents=FileUpload.Select(fu=>new calendarEvent
+			{
+				title=fu.name,
+				start=fu.fileDate,
+				imageUrl=Convert.ToBase64String(fu.FileContent) ,
+				color=fu.emotion switch
+				{
+					 	Emotions.Happy => "#F78D7D",
+                        Emotions.Sad => "#9BB9C3",
+                        Emotions.Angry => "#CB9897",
+                        Emotions.Other => "#FFCCBB",
+                        _ => "#FFFFFF"
+				}
+			}).ToList();
 
-			//return json;
-
-			return new JsonResult(new[] { CalendarEvent });
+			return new JsonResult(calendarEvents);
 		}
 		else { 
 			FileUpload = _context.FileUpload.ToList();
 			return Page();
 		}
+		
 	}
+	
 }
+
