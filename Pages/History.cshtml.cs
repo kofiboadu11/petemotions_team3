@@ -40,7 +40,7 @@ public class HistoryModel : PageModel
 			FileUpload=_context.FileUpload.ToList();
 			var calendarEvents=FileUpload.Select(fu=>new calendarEvent
 			{
-				title=fu.name,
+				title=fu.emotion.ToString(),
 				start=fu.fileDate,
 				imageUrl=Convert.ToBase64String(fu.FileContent) ,
 				color=fu.emotion switch

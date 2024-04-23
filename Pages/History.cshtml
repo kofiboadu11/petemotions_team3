@@ -105,6 +105,7 @@ new Chart("myChart", {
         var calendarEl = document.getElementById('calendar');
         var calendar=new FullCalendar.Calendar(calendarEl,{
           initialView:'dayGridMonth',
+          displayEventTime: false,
           events:{
             url:'/History/MyFeed',
             method:'GET',
@@ -122,6 +123,8 @@ new Chart("myChart", {
             var modal = document.getElementById('imageModal');
             modal.querySelector('.modal-body').innerHTML = '';
             modal.querySelector('.modal-body').appendChild(imgElement);
+            var modalTitle = modal.querySelector('.modal-header h3');
+            modalTitle.innerText = info.event.title; // Set the event title as the modal title
             var myModal = new bootstrap.Modal(modal);
             myModal.show();
 
@@ -149,7 +152,9 @@ new Chart("myChart", {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h3 style="color: #000000;">Title Here</h3>
                 <h5 class="modal-title">Image</h5>
+                <p style="color: #000000;">This photo was used to determine that emotion</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
