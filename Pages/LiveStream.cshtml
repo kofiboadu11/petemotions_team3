@@ -132,15 +132,17 @@ public string GetAntiXsrfRequestToken()
                     previewImg.src = URL.createObjectURL(blob);
                     const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
                     imagePreviewContainer.style.display = 'block';
+
+                    // Wait until loaded
+                    previewImg.onload = function () {
+                        getEmotion();
+                    };
                 }, 'image/png');
-
-                // Get emotion
-                getEmotion(); // what to put here?
-
             } else {
                 console.error('Element with ID "vid" (video element) not found.');
             }
         }
+
 
         async function getEmotion() {
             let emotion = "";
