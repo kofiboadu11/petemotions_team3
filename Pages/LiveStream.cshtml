@@ -47,9 +47,6 @@ public string GetAntiXsrfRequestToken()
                 <div class="col-md-8">
                     <div class="broadcast_imagePreview text-center" style="display: none;">
                         <div class="broadcast_imageContainer">
-                            <div class="broadcast_spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
                             <img id="previewImg" class="img-fluid" alt="Preview Image">
                         </div>
                     </div>
@@ -141,6 +138,73 @@ public string GetAntiXsrfRequestToken()
                 imagePreviewContainer.style.display = 'block';
             } else {
                 console.error('Element with ID "vid" (video element) not found.');
+            }
+
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var img = document.getElementById('previewImg');
+                img.src = event.target.result;
+                // Display emotion box after image upload
+                document.querySelector('.upload_emotionBox').style.display = 'block';
+
+                img.onload = async function () {
+                    console.log(img.width + 'x' + img.height);
+                    let tensor = tf.browser.fromPixels(img)
+                        .resizeNearestNeighbor([224, 224])
+                        .expandDims();
+
+                    let result = await prediction(tensor);
+                    console.log(result);
+                    let resultIndex = result.indexOf(Math.max.apply(Math, result));
+                    console.log(resultIndex);
+                    switch (resultIndex) {
+                        case 0:
+                            emotion = 'Angry';
+                            break;
+                        case 1:
+                            emotion = 'Happy';
+                            break;
+                        case 2:
+                            emotion = 'Other';
+                            break;
+                        case 3:
+                            emotion = 'Sad';
+                            break;
+                    }
+                    var formData = new FormData();
+                    var currentDate = new Date();
+                    var currentTime = currentDate.toLocaleString();
+                    formData.append('FileUpload', file);
+                    formData.append('EmotionString', emotion);
+                    $.ajax({
+                        url: '',
+                        headers:
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                        },
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        type: 'post',
+                        //success: function () {
+                        //    alert('Uploaded by jQuery');
+                        //}
+                    });
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Replace "Thinking..." with actual emotion received from server
+            //var emotion = "Positive"; // Set manually for now, will be replaced once we get emotion from server
+            document.getElementById('emotionContent').innerHTML = emotion;
+
+            // Change emotion box color based on emotion
+            if (emotion === 'Positive') {
+                document.getElementById('emotionBox').style.backgroundColor = "#7dc17d";
+            } else if (emotion === 'Neutral') {
+                document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
+            } else if (emotion === 'Negative') {
+                document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
             }
         }
     </script>
