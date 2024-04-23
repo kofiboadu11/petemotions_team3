@@ -94,10 +94,13 @@ public string GetAntiXsrfRequestToken()
             return result;
         }
 
+        let intValues = [0, 0, 0, 0];
         // Live streaming when brodcast button clicked
         document.getElementById('broadcastBtn').addEventListener('click', function () {
 	    let video = document.getElementById("vid");
 	    let mediaDevices = navigator.mediaDevices;
+        emotionValues = [0, 0, 0, 0];
+
 	    mediaDevices
                 .getUserMedia({
                     video: true,
@@ -127,6 +130,11 @@ public string GetAntiXsrfRequestToken()
             video.srcObject = null;
 
             clearInterval(intervalID);
+
+            console.log("Stream emotion values: " + intValues);
+            let { value, maxIndex } = getMostCommon();
+            console.log("Highest value:", value);
+            console.log("Most common emotion:", maxIndex);
         });
 
 
@@ -193,6 +201,7 @@ public string GetAntiXsrfRequestToken()
                     break;
             }
             console.log(emotion);
+            incrementArray(emotion);
 
             // Replace "Thinking..." with actual emotion received from server
             document.getElementById('emotionContent').innerHTML = emotion;
@@ -208,6 +217,55 @@ public string GetAntiXsrfRequestToken()
             } else {
                 emotionBox.style.backgroundColor = "#FFFFFF";
             }
+        }
+
+        // Function to increment the array
+        function incrementArray(emo) {
+            switch (emo) {
+                case 'Angry':
+                    intValues[0]++;
+                    break;
+                case 'Happy':
+                    intValues[1]++;
+                    break;
+                case 'Other':
+                    intValues[2]++;
+                    break;
+                case 'Sad':
+                    intValues[3]++;
+                    break;
+            }
+            console.log(intValues);
+        }
+
+        // Function to determine the highest value and its position in the array
+        function getMostCommon() {
+            let max = intValues[0];
+            let maxIndex = 0;
+
+            for (let i = 1; i < intValues.length; i++) {
+                if (intValues[i] > max) {
+                    max = intValues[i];
+                    maxIndex = i;
+                }
+            }
+
+            switch (maxIndex) {
+                case 0:
+                    e = 'Angry';
+                    break;
+                case 1:
+                    e = 'Happy';
+                    break;
+                case 2:
+                    e = 'Other';
+                    break;
+                case 3:
+                    e = 'Sad';
+                    break;
+            }
+
+            return { value: max, maxIndex: e };
         }
 
     </script>
