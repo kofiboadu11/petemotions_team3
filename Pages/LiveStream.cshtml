@@ -38,6 +38,8 @@ public string GetAntiXsrfRequestToken()
                         <div class="broadcast_buttongroup">
                             <div class="broadcast_buttonR">
                                 <button class="btn btn-primary" type="button" id="broadcastBtn">Start stream</button>
+                                <button class="btn btn-primary" type="button" id="broadcastStopBtn">Stop stream</button>
+
                             </div>
                         </div>
                     </form>
@@ -107,11 +109,26 @@ public string GetAntiXsrfRequestToken()
                     video.addEventListener("loadedmetadata", () => {
                         video.play();
                         // Start capturing snapshots every 5 seconds
-                        setInterval(captureSnapshot, 5000);
+                        intervalID = setInterval(captureSnapshot, 5000);
                     });
 		    }).catch(alert); 
             }
         );
+
+        // Stop live streaming
+        document.getElementById('broadcastStopBtn').addEventListener('click', function () {
+            let video = document.getElementById("vid");
+            let stream = video.srcObject;
+            let tracks = stream.getTracks();
+
+            tracks.forEach(track => {
+                track.stop();
+            });
+            video.srcObject = null;
+
+            clearInterval(intervalID);
+        });
+
 
         function captureSnapshot() {
             // Get the video element
@@ -127,11 +144,15 @@ public string GetAntiXsrfRequestToken()
 
                 // Convert the canvas content to a Blob object (PNG format) with filename
                 canvas.toBlob(function (blob) {
+                    if (!blob) {
+                        console.error('Empty blob. Do not worry this is fine.');
+                        clearInterval(intervalID); // Clear the interval
+                        return;
+                    }
                     // Display the captured frame
                     const previewImg = document.getElementById('previewImg');
                     previewImg.src = URL.createObjectURL(blob);
                     const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
-                    imagePreviewContainer.style.display = 'block';
 
                     // Wait until loaded
                     previewImg.onload = function () {
