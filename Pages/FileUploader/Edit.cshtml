@@ -42,7 +42,7 @@
             <input type="hidden" asp-for="FileUpload.Id" />
             <div class="form-group">
                 <label asp-for="FileUpload.FileContent" class="control-label"></label>
-                <input asp-for="FileUpload.FileContent" class="form-control" />
+                <input type = "hidden" asp-for="FileUpload.FileContent" class="form-control"/>
                 <span asp-validation-for="FileUpload.FileContent" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -52,7 +52,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="FileUpload.emotion" class="control-label"></label>
-                <select asp-for="FileUpload.emotion" class="form-control"></select>
+                <select asp-for="FileUpload.emotion" asp-items="Html.GetEnumSelectList<Models.Emotions>()"></select>
                 <span asp-validation-for="FileUpload.emotion" class="text-danger"></span>
             </div>
             <div class="form-group">
