@@ -186,6 +186,7 @@ public string GetAntiXsrfRequestToken()
             console.log(result);
             let resultIndex = result.indexOf(Math.max.apply(Math, result));
             console.log(resultIndex);
+            incrementArray(resultIndex);
             switch (resultIndex) {
                 case 0:
                     emotion = 'Angry';
@@ -201,7 +202,6 @@ public string GetAntiXsrfRequestToken()
                     break;
             }
             console.log(emotion);
-            incrementArray(emotion);
 
             // Replace "Thinking..." with actual emotion received from server
             document.getElementById('emotionContent').innerHTML = emotion;
@@ -220,21 +220,8 @@ public string GetAntiXsrfRequestToken()
         }
 
         // Function to increment the array
-        function incrementArray(emo) {
-            switch (emo) {
-                case 'Angry':
-                    intValues[0]++;
-                    break;
-                case 'Happy':
-                    intValues[1]++;
-                    break;
-                case 'Other':
-                    intValues[2]++;
-                    break;
-                case 'Sad':
-                    intValues[3]++;
-                    break;
-            }
+        function incrementArray(i) {
+            intValues[i]++;
             console.log(intValues);
         }
 
