@@ -470,6 +470,19 @@
   background-size: 100%;
   background-color: white;
   margin-bottom:5rem;
+  height: 1000;
+}
+
+:root .calendar-container .fc-daygrid-event{
+  position: relative;
+  border-radius: 3px;
+  font-size: var(--fc-small-font-size);
+}
+
+.calendar-container .fc-daygrid-block-event{
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
 }
 
 .piechart_container{
@@ -491,3 +504,9 @@
 .fc-toolbar-title{
   color: #FFF;
   }
+
+  .modal-body img {
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+    max-width: 100%; /* Ensure the image does not exceed the width of its container */
+}
