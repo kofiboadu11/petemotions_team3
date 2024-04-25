@@ -180,6 +180,8 @@ public string GetAntiXsrfRequestToken()
                     document.getElementById('emotionContent').innerHTML = emotion;
 
                     // Change emotion box color based on emotion
+                    var emotionBox = document.querySelector('.upload_emotionBox');
+
                     if (emotion === 'Happy') {
                         emotionBox.style.backgroundColor = "#7dc17d";
                     } else if (emotion === 'Sad') {
