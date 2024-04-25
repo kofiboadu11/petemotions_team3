@@ -169,6 +169,27 @@ public string GetAntiXsrfRequestToken()
                     // Display the captured frame
                     const previewImg = document.getElementById('previewImg');
                     previewImg.src = URL.createObjectURL(blob);
+		    	var FileName = 'snapshot.png'; 
+            		var file = new File([blob], FileName, { type: 'image/png' });
+                        var formData = new FormData();
+                        var currentDate = new Date();
+                        var currentTime = currentDate.toLocaleString();
+                        formData.append('FileUpload', file);
+                        formData.append('EmotionString', "Happy");
+                        $.ajax({
+                            url: '',
+                            headers:
+                            {
+                                "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                            },
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            type: 'post',
+                            //success: function () {
+                            //    alert('Uploaded by jQuery');
+                            //}
+                        });
                     const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
 
                     // Wait until loaded
