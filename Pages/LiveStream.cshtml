@@ -146,7 +146,6 @@ public string GetAntiXsrfRequestToken()
 
             // Get middle and most common values
             let middleIndex = Math.floor(capturedImages.length / 2);
-            let middleValue = capturedImages[middleIndex];
             let middleValueEmotion = capturedEmotions[middleIndex];
             let { value, commonEmotion } = getMostCommon();
 
@@ -173,11 +172,30 @@ public string GetAntiXsrfRequestToken()
                     return;
                 }
             }
+            let middleValue = capturedImages[middleIndex + i];
 
 
             // Now that we have a suitable image to send, pass this to the server
             console.log("Suitable Image determined. Now attempting to send image from livestream to the server.")
-            // TODO: MODIFY JARED CODE AND PUT HERE
+            var formData = new FormData();
+            var currentDate = new Date();
+            var currentTime = currentDate.toLocaleString();
+            formData.append('FileUpload', middleValue);
+            formData.append('EmotionString', middleValueEmotion);
+            $.ajax({
+                url: '',
+                headers:
+                {
+                    "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                type: 'post',
+                //success: function () {
+                //    alert('Uploaded by jQuery');
+                //}
+            });
         });
 
 
@@ -201,33 +219,13 @@ public string GetAntiXsrfRequestToken()
                         return;
                     }
 
-                    // Store in the array
-                    capturedImages.push(blob);
-
-                    // Display the captured frame
+                    // Add file to array
                     const previewImg = document.getElementById('previewImg');
                     previewImg.src = URL.createObjectURL(blob);
-		    	var FileName = 'snapshot.png'; 
+		    	    var FileName = 'snapshot.png'; 
             		var file = new File([blob], FileName, { type: 'image/png' });
-                        var formData = new FormData();
-                        var currentDate = new Date();
-                        var currentTime = currentDate.toLocaleString();
-                        formData.append('FileUpload', file);
-                        formData.append('EmotionString', "Happy");
-                        $.ajax({
-                            url: '',
-                            headers:
-                            {
-                                "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
-                            },
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            type: 'post',
-                            //success: function () {
-                            //    alert('Uploaded by jQuery');
-                            //}
-                        });
+                    capturedImages.push(file);
+                        
                     const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
 
                     // Wait until loaded
