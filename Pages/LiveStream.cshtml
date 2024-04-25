@@ -1,5 +1,5 @@
 @page
-@model LiveSteamModel
+@model LiveStreamModel
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @functions{
 public string GetAntiXsrfRequestToken()
@@ -96,11 +96,15 @@ public string GetAntiXsrfRequestToken()
         }
 
         let intValues = [0, 0, 0, 0];
+        let capturedImages = [];
+        let capturedEmotions = [];
+
         // Live streaming when brodcast button clicked
         document.getElementById('broadcastBtn').addEventListener('click', function () {
 	    let video = document.getElementById("vid");
 	    let mediaDevices = navigator.mediaDevices;
         intValues = [0, 0, 0, 0];
+        capturedImages = [];
 
 	    mediaDevices
                 .getUserMedia({
@@ -134,16 +138,46 @@ public string GetAntiXsrfRequestToken()
             clearInterval(intervalID);
             hideEmotionBox();
 
-            // TODO: WHY ISNT THIS WORKING?
-            // Don't want to send nothing to the DB
-            if (intValues == [0, 0, 0, 0]) {
-                console.log("Not enough data!")
+            // Check if intValues array is still empty, if so then simply stop the stream
+            if (intValues.every(value => value === 0)) {
+                console.log("Not enough data!");
+                return;
             }
 
-            console.log("Stream emotion values: " + intValues);
-            let { value, maxIndex } = getMostCommon();
+            // Get middle and most common values
+            let middleIndex = Math.floor(capturedImages.length / 2);
+            let middleValue = capturedImages[middleIndex];
+            let middleValueEmotion = capturedEmotions[middleIndex];
+            let { value, commonEmotion } = getMostCommon();
+
+            console.log("STREAM ENDED")
+            console.log("Final emotion values: " + intValues);
+            console.log("Image count in array = [" + capturedImages.length + "] with middle value of " + middleValueEmotion);
             console.log("Highest value:", value);
-            console.log("Most common emotion:", maxIndex);
+            console.log("Most common emotion:", commonEmotion);
+
+            // Make sure selected value is the most common emotion
+            let i = 0;
+            while (middleValueEmotion !== commonEmotion) {
+                console.log("Middle value wasn't most common. Looking for most common.");
+                console.log(">" + middleValueEmotion + " not " + commonEmotion);
+
+                middleValueEmotion = capturedEmotions[middleIndex + i];
+                if (middleValueEmotion === commonEmotion) break;
+                middleValueEmotion = capturedEmotions[middleIndex - i];
+                if (middleValueEmotion === commonEmotion) break;
+                i++;
+
+                if (i > middleIndex) {
+                    console.error("MIDDLE VALUE COULD NOT BE FOUND");
+                    return;
+                }
+            }
+
+
+            // Now that we have a suitable image to send, pass this to the server
+            console.log("Suitable Image determined. Now attempting to send image from livestream to the server.")
+            // TODO: MODIFY JARED CODE AND PUT HERE
         });
 
 
@@ -166,6 +200,10 @@ public string GetAntiXsrfRequestToken()
                         clearInterval(intervalID); // Clear the interval
                         return;
                     }
+
+                    // Store in the array
+                    capturedImages.push(blob);
+
                     // Display the captured frame
                     const previewImg = document.getElementById('previewImg');
                     previewImg.src = URL.createObjectURL(blob);
@@ -210,7 +248,9 @@ public string GetAntiXsrfRequestToken()
                     emotion = 'Sad';
                     break;
             }
+            // Log the emotion
             console.log(emotion);
+            capturedEmotions.push(emotion);
 
             // Replace "Thinking..." with actual emotion received from server
             document.getElementById('emotionContent').innerHTML = emotion;
@@ -246,23 +286,25 @@ public string GetAntiXsrfRequestToken()
                 }
             }
 
+            let commonEmotion = "";
             switch (maxIndex) {
                 case 0:
-                    e = 'Angry';
+                    commonEmotion = 'Angry';
                     break;
                 case 1:
-                    e = 'Happy';
+                    commonEmotion = 'Happy';
                     break;
                 case 2:
-                    e = 'Other';
+                    commonEmotion = 'Other';
                     break;
                 case 3:
-                    e = 'Sad';
+                    commonEmotion = 'Sad';
                     break;
             }
 
-            return { value: max, maxIndex: e };
+            return { value: max, commonEmotion: commonEmotion };
         }
+
 
         // Function to show the emotion box
         function showEmotionBox() {
