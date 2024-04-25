@@ -12,11 +12,11 @@ using Microsoft.Extensions.Configuration;
 
 
 namespace PetEmotionsApp.Pages;
-public class LiveSteamModel : PageModel
+public class LiveStreamModel : PageModel
 {
 	private readonly PetEmotionsAppContext _context;
 
-	public LiveSteamModel(PetEmotionsAppContext context)
+	public LiveStreamModel(PetEmotionsAppContext context)
 	{
 		_context = context;
 	}
