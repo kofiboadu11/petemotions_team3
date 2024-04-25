@@ -21,15 +21,7 @@ public static class SeedData
             {
                 return;   // DB has been seeded
             }
-            //If someone finds out how to put a png to pre-load you would do it here
-/*            context.FileUpload.AddRange(
-                new FileUpload
-                {
-                    FileContent = ,
-                    fileDate = ,
-                    emotion = 
-                },
-            );*/
+
             context.SaveChanges();
         }
     }

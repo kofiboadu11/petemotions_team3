@@ -70,12 +70,10 @@ public string? GetAntiXsrfRequestToken()
     </div>
 
     <script>
-        //TODO: move the model stuff to it's own file/function to be referenced
         async function preprocess(imageData) {
             let imageTensor = tf.browse.fromPixels(imageData);
             const offset = tf.scalar(255.0);
             const normalized = tf.scalar(1.0).sub(resized.div(offset));
-            //may need to change dimensions of input
             return normalized;
         }
         async function loadModel() {
@@ -84,7 +82,6 @@ public string? GetAntiXsrfRequestToken()
         async function prediction(tensor) {
             const model = await loadModel();
             let result = model.predict(tensor).data();
-            //console.log(result);
             return result;
         }
         document.getElementById('uploadBtn').addEventListener('click', function () {
@@ -107,7 +104,6 @@ public string? GetAntiXsrfRequestToken()
                 document.querySelector('.upload_emotionBox').style.backgroundColor = "#ced4da";
 
                 var emotion = "";
-                //formData.append('timestamp', currentTime);
 
                 // Display loading overlay
                 document.querySelector('.upload_imageContainer img').style.filter = 'grayscale(70%)';
@@ -161,22 +157,16 @@ public string? GetAntiXsrfRequestToken()
                             contentType: false,
                             processData: false,
                             type: 'post',
-                            //success: function () {
-                            //    alert('Uploaded by jQuery');
-                            //}
                         });
                     }
                 };
                 reader.readAsDataURL(file);
                 
-                // Simulate server response delay (remove this in actual implementation)
                 setTimeout(function () {
                     // Hide loading overlay
                     document.querySelector('.upload_imageContainer img').style.filter = 'grayscale(0%)';
                     document.querySelector('.upload_spinner-border').style.display = 'none';
 
-                    // Replace "Thinking..." with actual emotion received from server
-                    //var emotion = "Positive"; // Set manually for now, will be replaced once we get emotion from server
                     document.getElementById('emotionContent').innerHTML = emotion;
 
                     // Change emotion box color based on emotion

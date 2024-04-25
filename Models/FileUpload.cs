@@ -22,7 +22,6 @@ namespace PetEmotionsApp.Models
         [Display(Name = "FileName")]
         public required string name {get; set;}
     }
-    //for whatever reason its overcomplicated to do enums for me
     public enum Emotions
     {
         Happy,
