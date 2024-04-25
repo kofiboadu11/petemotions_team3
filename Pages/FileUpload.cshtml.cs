@@ -34,12 +34,14 @@ public class FileUploadModel : PageModel
 				{
 					FileContent = memoryStream.ToArray(),
 						    fileDate = DateTime.UtcNow,
-						    emotion = EmotionString switch {
-							    "Happy" => Emotions.Happy,
-							    "Sad" => Emotions.Sad,
-							    "Angry" => Emotions.Angry,
-							    "Other" => Emotions.Other
-						    },
+						    emotion = EmotionString switch
+                            {
+                                "Happy" => Emotions.Happy,
+                                "Sad" => Emotions.Sad,
+                                "Angry" => Emotions.Angry,
+                                "Other" => Emotions.Other,
+                                _ => throw new NotImplementedException()
+                            },
 						    type = FileUpload.ContentType,
 						    name = FileUpload.FileName,
 				};
