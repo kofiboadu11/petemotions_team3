@@ -9,7 +9,7 @@ namespace PetEmotionsApp.Models
         public int Id {get; set;}
 
         [Display(Name = "File Contents")]
-        public byte[] FileContent {get; set;}
+        public required byte[] FileContent {get; set;}
         [Display(Name = "File Date")]
         public DateTime fileDate {get; set;}
 
@@ -17,10 +17,10 @@ namespace PetEmotionsApp.Models
         public Emotions emotion {get; set;}
 
         [Display(Name = "FileType")]
-        public string type {get; set;}
+        public required string type {get; set;}
 
         [Display(Name = "FileName")]
-        public string name {get; set;}
+        public required string name {get; set;}
     }
     //for whatever reason its overcomplicated to do enums for me
     public enum Emotions

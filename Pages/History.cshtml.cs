@@ -25,15 +25,15 @@ public class HistoryModel : PageModel
 
 
 	public class calendarEvent {
-		public string title {get; set;}
+		public required string title {get; set;}
 		public DateTime start {get; set;}
 		public DateTime end {get; set;}
-		public string color {get; set;}
-		public string imageUrl {get; set;}
+		public required string color {get; set;}
+		public required string imageUrl {get; set;}
 	}
 
 
-	public IActionResult OnGet([FromRoute] string param= null)
+	public IActionResult OnGet([FromRoute] string? param = null)
 	{
 		if(param=="MyFeed")
 		{
