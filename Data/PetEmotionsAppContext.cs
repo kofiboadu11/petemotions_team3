@@ -16,7 +16,6 @@ namespace PetEmotionsApp.Data
 
         public DbSet<FileUpload> FileUpload { get; set; }
 
-        //placeholder for if I ever get enums to work
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
