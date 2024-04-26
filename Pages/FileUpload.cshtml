@@ -180,12 +180,16 @@ public string? GetAntiXsrfRequestToken()
                     document.getElementById('emotionContent').innerHTML = emotion;
 
                     // Change emotion box color based on emotion
-                    if (emotion === 'Positive') {
-                        document.getElementById('emotionBox').style.backgroundColor = "#7dc17d";
-                    } else if (emotion === 'Neutral') {
-                        document.getElementById('emotionBox').style.backgroundColor = "#ced4da";
-                    } else if (emotion === 'Negative') {
-                        document.getElementById('emotionBox').style.backgroundColor = "#dc7f7f";
+                    var emotionBox = document.querySelector('.upload_emotionBox');
+
+                    if (emotion === 'Happy') {
+                        emotionBox.style.backgroundColor = "#7dc17d";
+                    } else if (emotion === 'Sad') {
+                        emotionBox.style.backgroundColor = "#ced4da";
+                    } else if (emotion === 'Angry') {
+                        emotionBox.style.backgroundColor = "#dc7f7f";
+                    } else {
+                        emotionBox.style.backgroundColor = "#FFFFFF";
                     }
                 }, 2000); // 2 second delay
             }

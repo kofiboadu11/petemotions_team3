@@ -1,0 +1,340 @@
+@page
+@model LiveStreamModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+public string GetAntiXsrfRequestToken()
+{
+    return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+}
+}
+
+@{
+    ViewData["Title"] = "PetVibes - Livestream";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--importing tensorflow js -->
+    <script src="https://cdn.jsdelivr.net/npm/@@tensorflow/tfjs@@4.17.0/dist/tf.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/styles.css">
+</head>
+
+<body style="background-color: #222831;">
+    <form method="post">
+    <!-- your inputs-->
+    </form>
+    <div class="fileUpload">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="text-center">
+                    <form id="broadcastForm" enctype="multipart/form-data">
+                        <label class="form-label" style="color: white;" for="customFile">Press the button below to start broadcasting an attached camera</label>
+                        <div class="broadcast_buttongroup">
+                            <div class="broadcast_buttonR">
+                                <button class="btn btn-primary" type="button" id="broadcastBtn">Start stream</button>
+                                <button class="btn btn-primary" type="button" id="broadcastStopBtn">Stop stream</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="broadcast_imagePreview text-center" style="display: none;">
+                        <div class="broadcast_imageContainer">
+                            <img id="previewImg" class="img-fluid" alt="Preview Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="text-center">
+                        <video id="vid" class="img-fluid"></video>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="broadcast_emotionBox text-center">
+                        <p class="broadcast_emotionTitle">Emotion Detected: <span id="emotionContent">Thinking...</span></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        //TODO: move the model stuff to it's own file/function to be referenced
+        async function preprocess(imageData) {
+            let imageTensor = tf.browse.fromPixels(imageData);
+            const ctx = canvas.getContext('2d');
+            const offset = tf.scalar(255.0);
+            const normalized = tf.scalar(1.0).sub(resized.div(offset));
+            //may need to change dimensions of input
+            return normalized;
+        }
+        async function loadModel() {
+            return tf.loadLayersModel('tfjs_petemo/model.json');
+        }
+        async function prediction(tensor) {
+            const model = await loadModel();
+            let result = model.predict(tensor).data();
+            console.log(result);
+            return result;
+        }
+
+        let intValues = [0, 0, 0, 0];
+        let capturedImages = [];
+        let capturedEmotions = [];
+
+        // Live streaming when brodcast button clicked
+        document.getElementById('broadcastBtn').addEventListener('click', function () {
+	    let video = document.getElementById("vid");
+	    let mediaDevices = navigator.mediaDevices;
+        intValues = [0, 0, 0, 0];
+        capturedImages = [];
+
+	    mediaDevices
+                .getUserMedia({
+                    video: true,
+                    audio: false,
+                })
+                .then((stream) => {
+                    // Changing the source of video to current stream.
+                    video.srcObject = stream;
+                    video.addEventListener("loadedmetadata", () => {
+                        video.play();
+                        // Start capturing snapshots every 5 seconds
+                        showEmotionBox();
+                        intervalID = setInterval(captureSnapshot, 5000);
+                    });
+		    }).catch(alert); 
+            }
+        );
+
+        // Stop live streaming
+        document.getElementById('broadcastStopBtn').addEventListener('click', function () {
+            let video = document.getElementById("vid");
+            let stream = video.srcObject;
+            let tracks = stream.getTracks();
+
+            tracks.forEach(track => {
+                track.stop();
+            });
+            video.srcObject = null;
+
+            clearInterval(intervalID);
+            hideEmotionBox();
+
+            // Check if intValues array is still empty, if so then simply stop the stream
+            if (intValues.every(value => value === 0)) {
+                console.log("Not enough data!");
+                return;
+            }
+
+            // Get middle and most common values
+            let middleIndex = Math.floor(capturedImages.length / 2);
+            let middleValueEmotion = capturedEmotions[middleIndex];
+            let { value, commonEmotion } = getMostCommon();
+
+            console.log("STREAM ENDED")
+            console.log("Final emotion values: " + intValues);
+            console.log("Image count in array = [" + capturedImages.length + "] with middle value of " + middleValueEmotion);
+            console.log("Highest value:", value);
+            console.log("Most common emotion:", commonEmotion);
+
+            // Make sure selected value is the most common emotion
+            let i = 0;
+            while (middleValueEmotion !== commonEmotion) {
+                console.log("Middle value wasn't most common. Looking for most common.");
+                console.log(">" + middleValueEmotion + " not " + commonEmotion);
+
+                middleValueEmotion = capturedEmotions[middleIndex + i];
+                if (middleValueEmotion === commonEmotion) break;
+                middleValueEmotion = capturedEmotions[middleIndex - i];
+                if (middleValueEmotion === commonEmotion) break;
+                i++;
+
+                if (i > middleIndex) {
+                    console.error("MIDDLE VALUE COULD NOT BE FOUND");
+                    return;
+                }
+            }
+            let middleValue = capturedImages[middleIndex + i];
+
+
+            // Now that we have a suitable image to send, pass this to the server
+            console.log("Suitable Image determined. Now attempting to send image from livestream to the server.")
+            var formData = new FormData();
+            var currentDate = new Date();
+            var currentTime = currentDate.toLocaleString();
+            formData.append('FileUpload', middleValue);
+            formData.append('EmotionString', middleValueEmotion);
+            $.ajax({
+                url: '',
+                headers:
+                {
+                    "RequestVerificationToken": '@GetAntiXsrfRequestToken()',
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                type: 'post',
+                //success: function () {
+                //    alert('Uploaded by jQuery');
+                //}
+            });
+        });
+
+
+        function captureSnapshot() {
+            // Get the video element
+            const video = document.getElementById('vid');
+
+            if (video) {
+                // temp canvas element
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Convert the canvas content to a Blob object (PNG format) with filename
+                canvas.toBlob(function (blob) {
+                    if (!blob) {
+                        console.error('Empty blob. Do not worry this is fine.');
+                        clearInterval(intervalID); // Clear the interval
+                        return;
+                    }
+
+                    // Add file to array
+                    const previewImg = document.getElementById('previewImg');
+                    previewImg.src = URL.createObjectURL(blob);
+		    	    var FileName = 'snapshot.png'; 
+            		var file = new File([blob], FileName, { type: 'image/png' });
+                    capturedImages.push(file);
+                        
+                    const imagePreviewContainer = document.querySelector('.broadcast_imagePreview');
+
+                    // Wait until loaded
+                    previewImg.onload = function () {
+                        getEmotion();
+                    };
+                }, 'image/png');
+            } else {
+                console.error('Element with ID "vid" (video element) not found.');
+            }
+        }
+
+
+        async function getEmotion() {
+            let emotion = "";
+
+            const img = document.getElementById('previewImg');
+            console.log(img.width + 'x' + img.height);
+            let tensor = tf.browser.fromPixels(img)
+                .resizeNearestNeighbor([224, 224])
+                .expandDims();
+
+            let result = await prediction(tensor);
+            console.log(result);
+            let resultIndex = result.indexOf(Math.max.apply(Math, result));
+            console.log(resultIndex);
+            incrementArray(resultIndex);
+            switch (resultIndex) {
+                case 0:
+                    emotion = 'Angry';
+                    break;
+                case 1:
+                    emotion = 'Happy';
+                    break;
+                case 2:
+                    emotion = 'Other';
+                    break;
+                case 3:
+                    emotion = 'Sad';
+                    break;
+            }
+            // Log the emotion
+            console.log(emotion);
+            capturedEmotions.push(emotion);
+
+            // Replace "Thinking..." with actual emotion received from server
+            document.getElementById('emotionContent').innerHTML = emotion;
+
+            // Change emotion box color based on emotion
+            const emotionBox = document.querySelector('.broadcast_emotionBox');
+            if (emotion === 'Happy') {
+                emotionBox.style.backgroundColor = "#7dc17d";
+            } else if (emotion === 'Sad') {
+                emotionBox.style.backgroundColor = "#ced4da";
+            } else if (emotion === 'Angry') {
+                emotionBox.style.backgroundColor = "#dc7f7f";
+            } else {
+                emotionBox.style.backgroundColor = "#FFFFFF";
+            }
+        }
+
+        // Function to increment the array
+        function incrementArray(i) {
+            intValues[i]++;
+            console.log(intValues);
+        }
+
+        // Function to determine the highest value and its position in the array
+        function getMostCommon() {
+            let max = intValues[0];
+            let maxIndex = 0;
+
+            for (let i = 1; i < intValues.length; i++) {
+                if (intValues[i] > max) {
+                    max = intValues[i];
+                    maxIndex = i;
+                }
+            }
+
+            let commonEmotion = "";
+            switch (maxIndex) {
+                case 0:
+                    commonEmotion = 'Angry';
+                    break;
+                case 1:
+                    commonEmotion = 'Happy';
+                    break;
+                case 2:
+                    commonEmotion = 'Other';
+                    break;
+                case 3:
+                    commonEmotion = 'Sad';
+                    break;
+            }
+
+            return { value: max, commonEmotion: commonEmotion };
+        }
+
+
+        // Function to show the emotion box
+        function showEmotionBox() {
+            const emotionBox = document.querySelector('.broadcast_emotionBox');
+            emotionBox.style.display = 'block';
+        }
+
+        // Function to hide the emotion box
+        function hideEmotionBox() {
+            const emotionBox = document.querySelector('.broadcast_emotionBox');
+            emotionBox.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
